@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	int h, m;
+	while(true){
+		cin >> h >> m;
+		if (h == 0 && m == 0)break;
+		else cout << h + m << endl;
+	}
+	return 0;
+}
