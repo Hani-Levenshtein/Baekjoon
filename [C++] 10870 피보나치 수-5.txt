@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+int aa(int n) {
+	if (n <= 1) return n;
+	else return aa(n - 1) + aa(n - 2);
+
+
+}
+int main() {
+	int n;
+	cin >> n;
+	cout << aa(n);
+
+	return 0;
+}
