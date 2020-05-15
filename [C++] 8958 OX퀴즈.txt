@@ -1,0 +1,23 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+	int n,sum;
+	char str[81];
+	cin >> n;
+	for (int i = 0;i < n;i++) {
+		cin >> str;
+		sum = 0;
+		for (int j = 0,count=0;j < (int)strlen(str);j++) {
+			if (str[j] == 'O') {
+				count++;
+				sum = sum + count;
+			}
+			else
+				count = 0;
+		}
+		cout << sum << '\n';
+	}
+	return 0;
+}
