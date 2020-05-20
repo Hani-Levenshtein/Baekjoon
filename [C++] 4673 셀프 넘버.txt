@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+int check(int n) {
+	int sum = n;
+	while (n > 0) {
+		sum = sum + n % 10;
+		n = n / 10;
+	}
+	return sum;
+}
+
+
+int main() {
+	bool num[10001] = {false};
+	for (int i = 1;i <= 10000;i++) {
+		if (check(i) <= 10000) num[check(i)] = true;
+	}
+	for (int i = 1;i <= 10000;i++) if (num[i] == false) cout << i << '\n';
+	return 0;
+}
