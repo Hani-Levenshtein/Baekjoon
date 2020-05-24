@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+int main() {
+	int n, m,s,p;
+	cin >> n >> m>>s;
+	cin >> p;
+	s = s + p;
+	while (s >= 60) {
+		s = s - 60;
+		m = m + 1;
+	}
+	while(m >= 60) {
+		m = m - 60;
+		n = n + 1;
+	}
+	while(n >= 24) {
+		n = n - 24;
+
+	}
+	cout << n << " " << m<< " "<<s;
+}
