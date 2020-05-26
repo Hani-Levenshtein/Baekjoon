@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	int max=0,count = 1,a;
+	for (int i = 1;i <= 9;i++) {
+		cin >> a;
+		if (max < a) {
+			max = a;
+			count = i;
+		}
+	}
+	cout << max << "\n" << count;
+	return 0;
+}

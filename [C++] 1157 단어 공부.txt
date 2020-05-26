@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main() {
+	string xx;
+	getline(cin, xx);
+	int num[26],max=0,dup=0;
+	char alpha;
+	fill_n(num, 26, 0);
+	for (int i = 0;i < (int)xx.length();i++) {
+		if ('a' <= xx[i] && xx[i] <= 'z') num[xx[i] - 'a']++;
+		if ('A' <= xx[i] && xx[i] <= 'Z') num[xx[i] - 'A']++;
+	}
+	for (int i = 0;i < 26;i++) {
+		if (max < num[i]) {
+			max = num[i]; 
+			dup = 0;
+			alpha = 'A' + i;
+		}
+		else if (max == num[i]) {
+			dup = 1;
+		}
+	}
+	if (dup == 1) cout << "?";
+	else cout << alpha;
+	return 0;
+}
