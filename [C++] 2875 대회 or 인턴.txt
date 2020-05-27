@@ -1,0 +1,12 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main() {
+	int n, m, k;
+	cin >> n >> m >> k;
+	int team = min(n / 2, m);
+	int total = n + m - 3 * team - k;
+	for (;total < 0;total = total + 3) team--;
+	cout << team;
+	return 0;
+}
