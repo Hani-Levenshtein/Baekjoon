@@ -1,0 +1,38 @@
+#include <iostream>
+#include <stack>
+#include <string>
+int change(char x) {
+	if (x == '+' || x == '-') return 1;
+	if (x == '*' || x == '/') return 2;
+	if (x == '(') return 0;
+}
+using namespace std;
+int main() {
+	string xx;
+	getline(cin, xx);
+	stack<char> ss;
+	for (int i = 0;i < (int)xx.length();i++) {
+		if ('A' <= xx[i] && xx[i] <= 'Z') cout << xx[i];
+		else if (xx[i] <= '(') ss.push(xx[i]);
+		else if (xx[i] <= ')') {
+			while (ss.top() != '(') {
+				cout << ss.top();
+				ss.pop();
+			}
+			ss.pop();
+		}
+		else {
+			while (!ss.empty() && (change(ss.top()) >= change(xx[i]))) {
+				cout << ss.top();
+				ss.pop();
+			}
+			ss.push(xx[i]);
+		}
+	}
+	while (!ss.empty()) {
+		cout << ss.top();
+		ss.pop();
+	}
+
+	return 0;
+}
