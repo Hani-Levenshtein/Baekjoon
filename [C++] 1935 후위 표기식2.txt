@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stack>
+#include <string>
+
+using namespace std;
+int main() {
+	string xx;
+	int n;
+	cin >> n;
+	stack<double> ss;
+	double x, y;
+	double* arr = new double[n];
+	cin >> xx;
+	for (int i = 0;i < n;i++) cin >> arr[i];
+	for (int i = 0;i < (int)xx.length();i++) {
+		if ('A' <= xx[i] && xx[i] <= 'Z') {
+			ss.push(arr[xx[i] - 'A']);
+		}
+		else if (xx[i] == '*') {
+			x = ss.top();
+			ss.pop();
+			y = ss.top();
+			ss.pop();
+			ss.push(y * x);
+		}
+		else if (xx[i] == '+') {
+			x = ss.top();
+			ss.pop();
+			y = ss.top();
+			ss.pop();
+			ss.push(y + x);
+		}
+		else if (xx[i] == '-') {
+			x = ss.top();
+			ss.pop();
+			y = ss.top();
+			ss.pop();
+			ss.push(y - x);
+		}
+		else if (xx[i] == '/') {
+			x = ss.top();
+			ss.pop();
+			y = ss.top();
+			ss.pop();
+			ss.push(y / x);
+		}
+	}
+	cout << fixed;
+	cout.precision(2);
+	cout << ss.top();
+
+
+
+
+	return 0;
+}
