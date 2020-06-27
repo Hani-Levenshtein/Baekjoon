@@ -1,0 +1,24 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+
+using namespace std;
+int main() {
+	int n,good=0;
+	cin >> n;
+	string xx;
+	stack <char>s;
+	for (int i = 0;i < n;i++) {
+		cin >> xx;
+		for (int j = 0;j < (int)xx.length();j++) {
+			if (s.empty() == true) s.push(xx[j]);
+			else if (s.top() == xx[j]) s.pop();
+			else  s.push(xx[j]);
+		}
+		if (s.size() == 0) good++;
+		while (s.empty() != true) s.pop();
+	}
+	cout << good;
+	return 0;
+}
