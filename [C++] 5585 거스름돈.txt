@@ -1,0 +1,39 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,sum=0;
+	cin >> n;
+	n = 1000 - n;
+	while (n >= 500) {
+		n = n - 500;
+		sum++;
+	}
+	while (n >= 100) {
+		n = n - 100;
+		sum++;
+	}
+	while (n >= 50) {
+		n = n - 50;
+		sum++;
+	}
+	while (n >= 10) {
+		n = n - 10;
+		sum++;
+	}
+	while (n >= 5) {
+		n = n - 5;
+		sum++;
+	}
+	while (n >= 1) {
+		n = n - 1;
+		sum++;
+	}
+	cout << sum;
+	return 0;
+}
