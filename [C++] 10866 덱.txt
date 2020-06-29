@@ -1,0 +1,54 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <deque>
+#include <string>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m;
+	cin >> n;
+	deque <int> q;
+	string xx;
+	for (int i = 0;i < n;i++) {
+		cin >> xx;
+		if (xx == "push_back") {
+			cin >> m;
+			q.push_back(m);
+		}
+		else if (xx == "push_front") {
+			cin >> m;
+			q.push_front(m);
+		}
+		else if (xx == "front") {
+			if (q.empty() == true) cout << "-1" << '\n';
+			else {
+				cout << q.front() << '\n';
+			}
+		}
+		else if (xx == "back") {
+			if (q.empty() == true) cout << "-1" << '\n';
+			else {
+				cout << q.back() << '\n';
+			}
+		}
+		else if (xx == "size") cout << q.size() << '\n';
+		else if (xx == "empty") cout << q.empty() << '\n';
+		else if (xx == "pop_front") {
+			if (q.empty() == true) cout << "-1" << '\n';
+			else {
+				cout << q.front() << '\n';
+				q.pop_front();
+			}
+		}
+		else if (xx == "pop_back") {
+			if (q.empty() == true) cout << "-1" << '\n';
+			else {
+				cout << q.back() << '\n';
+				q.pop_back();
+			}
+		}
+	}
+	return 0;
+}
