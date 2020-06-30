@@ -1,0 +1,19 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int fac(int n) {
+	if (n == 0) return 1;
+	int a = 1;
+	for (int i = 1;i <= n;i++) a = a * i;
+	return a;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m;
+	cin >> n >> m;
+	cout << fac(n) / (fac(m) * fac(n - m));
+	return 0;
+}
