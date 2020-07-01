@@ -1,0 +1,47 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,sum=0,m;
+	cin >> n;
+	vector <int> dice;
+	for (int i = 0;i < 6;i++) {
+		cin >> m;
+		dice.push_back(m);
+		sum += m;
+	}
+	long long first = *min_element(dice.begin(), dice.end());
+
+	int arr[12] = { dice[0] + dice[1],
+		dice[0] + dice[2],
+		dice[0] + dice[3],
+		dice[0] + dice[4],
+		dice[1] + dice[2],
+		dice[1] + dice[3],
+		dice[1] + dice[5],
+		dice[2] + dice[4],
+		dice[2] + dice[5],
+		dice[3] + dice[4],  
+		dice[3] + dice[5],
+		dice[4] + dice[5]
+	};
+	long long second = *min_element(arr, arr + 12);
+
+	int arrr[8] = { dice[0] + dice[1] + dice[2],
+		dice[0] + dice[1] + dice[3],
+		dice[0] + dice[2] + dice[4],
+		dice[0] + dice[3] + dice[4],
+		dice[1] + dice[2] + dice[5],
+		dice[1] + dice[3] + dice[5],
+		dice[2] + dice[4] + dice[5],
+		dice[3] + dice[4] + dice[5]
+	};
+	long long third = *min_element(arrr, arrr + 8);
+	if (n == 1) cout << sum - *max_element(dice.begin(), dice.end());
+	else cout << (second * 4 + first * 4 * (n - 2)) * (n - 1) + first*(n - 2)*(n - 2) + second * 4 * (n - 2) + third * 4;
+	return 0;
+}
