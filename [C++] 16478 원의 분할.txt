@@ -1,0 +1,13 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	double a, b, c;
+	cin >> a >> b >> c;
+	cout << fixed;
+	cout.precision(6);
+	cout << a*c/b;
+	return 0;
+}
