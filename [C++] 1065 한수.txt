@@ -1,0 +1,30 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	int n,sum=99,m;
+	bool ox = true;
+	cin >> n;
+	if (n < 100) sum = n;
+	else {
+		for (int i = 100;i <= n;i++) {
+			int j = i;
+			ox = true;
+			m = j % 10 - j % 100 / 10;
+			j = j / 10;
+			while (j >= 10) {
+				if (m == j % 10 - j % 100 / 10)
+					j = j / 10;
+				else {
+					ox = false;
+					break;
+				}
+			}
+			if (ox == true) sum++;
+		}
+	}
+	cout << sum;
+ 	return 0;
+}
