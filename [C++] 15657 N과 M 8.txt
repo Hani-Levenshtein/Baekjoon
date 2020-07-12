@@ -1,0 +1,35 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int arr[8];
+void print(vector <int>& v) {
+	for (int i = 0;i < (int)v.size();i++)
+		cout << v[i] << " ";
+	cout << '\n';
+}
+void dfs(vector <int>& v, int in, int out) {
+	if ((int)v.size() == out) {
+		print(v);
+		return;
+	}
+	else {
+		for (int i = 0;i < in;i++) {
+			if (v.empty() == true || v.back() <= arr[i]) {
+				v.push_back(arr[i]);
+				dfs(v, in, out);
+				v.pop_back();
+			}
+		}
+	}
+}
+int main() {
+	int n, m;
+	cin >> n >> m;
+	vector <int> v;
+	for (int i = 0;i < n;i++) cin >> arr[i];
+	sort(arr, arr + n);
+	dfs(v, n, m);
+	return 0;
+}

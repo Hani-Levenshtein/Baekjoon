@@ -1,0 +1,16 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int main() {
+	double n, m;
+	cin >> n >> m;
+	double M = (m - n) / 400;
+	cout << fixed;
+	cout.precision(15);
+	cout << 1 / (1 + pow(10, M));
+	return 0;
+}
