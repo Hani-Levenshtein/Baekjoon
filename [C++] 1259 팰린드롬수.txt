@@ -1,0 +1,21 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	string n;
+	do {
+		cin >> n;
+		if (n.compare("0") == 0) break;
+		else if (n.size() == 1) cout << "yes" << '\n';
+		else if (n.size() == 2 && n[0] == n[1])cout << "yes" << '\n';
+		else if (n.size() == 3 && n[0] == n[2])cout << "yes" << '\n';
+		else if (n.size() == 4 && n[0] == n[3] && n[1] == n[2])cout << "yes" << '\n';
+		else if (n.size() == 5 && n[0] == n[4] && n[1] == n[3])cout << "yes" << '\n';
+		else cout << "no" << '\n';
+	} while (true);
+	return 0;
+}
