@@ -1,0 +1,50 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm> 
+using namespace std;
+struct node {
+	char alpha;
+	node* left;
+	node* right;
+};
+void preprint(node* root) {
+	cout << root->alpha;
+	if (root->left!=NULL) preprint(root->left);
+	if (root->right != NULL) preprint(root->right);
+}
+void inprint(node* root) {
+	if (root->left != NULL) inprint(root->left);
+	cout << root->alpha;
+	if (root->right != NULL) inprint(root->right);
+}
+void postprint(node* root) {
+	if (root->left != NULL) postprint(root->left);
+	if (root->right != NULL) postprint(root->right);
+	cout << root->alpha;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	char x, y, z;
+	cin >> n;
+	node* nodes;
+	nodes = (node*)malloc(sizeof(node) * n);
+	for (int i = 0;i < n;i++) {
+		cin >> x >> y >> z;
+		nodes[x - 'A'].alpha = x;
+		if (y != '.') nodes[x - 'A'].left = &nodes[y - 'A'];
+		else nodes[x - 'A'].left = NULL;
+		if (z != '.') nodes[x - 'A'].right = &nodes[z - 'A'];
+		else nodes[x - 'A'].right = NULL;
+	}
+	node* root = &nodes[0];
+	preprint(root);
+	cout << '\n';
+	inprint(root);
+	cout << '\n';
+	postprint(root);
+	cout << '\n';
+	return 0;
+}
