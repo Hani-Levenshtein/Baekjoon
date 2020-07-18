@@ -1,0 +1,44 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <list>
+#include <cmath>
+using namespace std;
+void print(vector <int>v) {
+    for (int i = 0;i < v.size();i++)
+        cout << v[i] << " ";
+    cout << '\n';
+}
+void dfs(vector<int> q,vector<int> v, vector <bool> c) {
+    if (v.size() == q.size()) {
+        print(v);
+        return;
+    }
+    else {
+        for (int i = 0;i < q.size();i++) {
+            if (c[i]!= false) {
+                v.push_back(q[i]);
+                c[i] = false;
+                dfs(q, v,c);
+                v.pop_back();
+                c[i] = true;
+            }
+        }
+    }
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    cin >> n;
+    vector <int> q;
+    vector <int> v;
+    vector <bool> c;
+    for (int i = 1;i <= n;i++) {
+        q.push_back(i);
+        c.push_back(true);
+    }
+    dfs(q,v,c);
+    return 0;
+}
