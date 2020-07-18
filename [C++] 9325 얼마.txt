@@ -1,0 +1,25 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    int car;
+    int opt,price,count;
+    cin >> n;
+    for (int i = 0;i < n;i++) {
+        cin >> car;
+        cin >> opt;
+        for (int j = 1;j <= opt;j++) {
+            cin >> count >> price;
+            car += count * price;
+        }
+        cout << car << '\n';
+    }
+    return 0;
+}
