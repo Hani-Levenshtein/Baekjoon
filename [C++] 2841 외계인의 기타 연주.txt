@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, p;
+	cin >> n >> p;
+	int a, b,finger=0;
+	vector<int> *v =new vector<int>[7];
+	for (int i = 0;i < n;i++) {
+		cin >> a >> b;
+		if (v[a].empty() == true || v[a].back() < b) {
+			v[a].push_back(b);
+			finger++;
+		}
+		else if (v[a].back() == b) continue;
+		else {
+			while (v[a].empty()!=true && v[a].back() > b) {
+				v[a].pop_back();
+				finger++;
+			}
+			if (v[a].empty() == true ||v[a].back() != b) {
+				v[a].push_back(b);
+				finger++;
+			}
+		}
+	}
+
+	cout << finger;
+
+	return 0;
+}
