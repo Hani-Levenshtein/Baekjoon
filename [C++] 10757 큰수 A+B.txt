@@ -1,0 +1,37 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    string a, b,c;
+    cin >> a >> b;
+    int as, bs;
+    int bit = 0;
+    while (!a.empty()&& !b.empty()) {
+        as = a.back() - '0'; bs = b.back() - '0';
+        c=(char)(((as + bs + bit)%10)+'0')+c;
+        bit = (as + bs+bit) / 10;
+        a.pop_back();b.pop_back();
+    }
+    while (!a.empty()) {
+        as = a.back() - '0';
+        c = (char)(((as + bit) % 10) + '0') + c;
+        bit = (as + bit) / 10;
+        a.pop_back();
+    }
+    while (!b.empty()) {
+        bs = b.back() - '0';
+        c = (char)(((bs + bit) % 10) + '0') + c;
+        bit = (bs + bit) / 10;
+        b.pop_back();
+    }
+    if (bit==1)c = (char)(bit + '0') + c;
+    cout <<c;
+    return 0;
+}
