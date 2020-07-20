@@ -1,0 +1,27 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	int* arr = new int[n];
+	bool* ret = new bool[n];
+	for (int i = 0;i < n;i++) {
+		cin >> arr[i];
+		ret[i] = true;
+	}
+	for (int i = 2;i <= 33;i++) {
+		for (int j = 0;j < n;j++) {
+			if (ret[j] == false || arr[j]==i) continue;
+			if (arr[j] == 1) ret[j] = false;
+			if (arr[j] == 2) continue;
+			if (arr[j] % i == 0) ret[j] = false;
+		}
+	}
+	cout << count(ret, ret + n, true);
+	return 0;
+}
