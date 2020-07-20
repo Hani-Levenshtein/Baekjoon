@@ -1,0 +1,37 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <list>
+using namespace std;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n, m;
+    cin >> n >> m;
+    int ret = n* m,w;
+    int countw1, countw2,countb1,countb2;
+    char** arr = new char* [n];
+    for (int i = 0;i < n;i++) arr[i] = new char[m];
+    for (int i = 0;i < n;i++)
+        for (int j = 0;j < m;j++)
+            cin >> arr[i][j];
+    for (int i = 0;i <= n-8;i++) {
+        for (int j = 0;j <= m - 8;j++)
+        {
+            countw1= countw2= countb1= countb2 = 0;
+            for (int a = i;a < i + 8;a++) {
+                for (int b = j;b < j + 8;b++) {
+                    if (arr[a][b] == 'B' && (a + b) % 2 == 0)countb1++;
+                    if (arr[a][b] == 'W' && (a + b) % 2 == 0)countw1++;
+                    if (arr[a][b] == 'B' && (a + b) % 2 == 1)countb2++;
+                    if (arr[a][b] == 'W' && (a+b) % 2 == 1)countw2++;
+                }
+            }
+            w = min(64 - countw1 - countb2, 64 - countb1 - countw2);
+            ret = min(ret, w);
+        }   
+    }
+    cout << ret;
+    return 0;
+}
