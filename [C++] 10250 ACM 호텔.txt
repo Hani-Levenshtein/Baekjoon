@@ -1,0 +1,24 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	int h, w, num,x;
+	cin >> n;
+	for (int i = 0;i < n;i++) {
+		x = 1;
+		cin >> h >> w >> num;
+		while (num > h) {
+			num = num - h;
+			x++;
+		}
+		cout << num;
+		if (x < 10) cout << "0";
+		cout << x<<'\n';
+	}
+	return 0;
+}
