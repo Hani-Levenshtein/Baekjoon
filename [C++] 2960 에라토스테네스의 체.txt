@@ -1,0 +1,25 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, k, count = 0;
+	cin >> n >> k;
+	int* arr = new int[n+1];
+	for (int i = 2;i <= n;i++) arr[i] = i;
+	for (int i = 2;i <= n;i++) {
+		for (int j = i;j <= n;j++) {
+			if (arr[j] == 0) continue;
+			if (arr[j] % i == 0) {
+				arr[j] = 0; count++;
+			}
+			if (count == k) {
+				cout << j;
+				return 0;
+			}
+		}
+	}
+}
