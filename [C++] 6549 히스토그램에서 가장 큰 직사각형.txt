@@ -1,0 +1,48 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <stack>
+#include <cmath>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n=1;
+	long long int M, top, width;
+	int arr[100001];
+	stack <int> s;
+	while (n != 0) {
+		cin >> n;
+		if (n == 0) break;
+		M = 0;
+
+		for (int i = 0;i < n;i++) cin >> arr[i];
+		for (int i = 0;i < n;i++) {
+			while (s.empty() != true && arr[s.top()] > arr[i])
+			{
+				top = arr[s.top()];
+				s.pop();
+				if (s.empty() != true)width = i - s.top() - 1;
+				else width = i;
+				M = max(M, top * width);
+
+			}
+			s.push(i);
+		}
+		while (!s.empty())
+		{
+			top = arr[s.top()];
+			s.pop();
+			if (s.empty() != true)width = n - s.top() - 1;
+			else width = n;
+			M = max(M, top * width);
+
+		}
+		cout << M<<'\n';
+		
+		
+	}
+	
+	return 0;
+}
