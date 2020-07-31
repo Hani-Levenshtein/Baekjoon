@@ -1,0 +1,31 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include<cstring>
+using namespace std;
+int arr[129][129];
+int white = 0, blue = 0;
+void dfs(int s,int g, int out, int arr[][129]) {
+	int sum = 0;
+	for (int i = 1 + s;i <= s+out;i++)for (int j = 1 + g;j <= g+out;j++)
+		if (arr[i][j] == 1) sum++;
+	if (sum == out * out) {
+		blue++; return;
+	}
+	else if (sum == 0) {
+		white++; return;
+	}
+	else {
+		for (int i = 0;i <= 1;i++)for (int j = 0;j <= 1;j++)
+			dfs(s + i * out / 2, g + j * out / 2, out / 2, arr);
+	}
+}
+int main() {
+	int n;
+	cin >> n;
+	for (int i = 1;i <= n;i++)for (int j = 1;j <= n;j++) cin >> arr[i][j];
+	dfs(0,0, n, arr);
+	cout << white << '\n' << blue;
+	return 0;
+}
