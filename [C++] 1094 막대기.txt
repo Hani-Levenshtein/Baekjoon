@@ -1,0 +1,23 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	int n;
+	int sum=0;
+	int num = 0;
+	int bar = 64;
+	cin >> n;
+	while (sum!=n) {
+		if (bar <= n - sum) {
+			sum = sum + bar;
+			
+			num++;
+		}
+		bar = bar / 2;
+	}
+	cout << num;
+	return 0;
+}

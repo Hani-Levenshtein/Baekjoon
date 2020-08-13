@@ -1,0 +1,31 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+using namespace std;
+bool check[26] = { false };
+int main() {
+	int n,sum=0,i;
+	string s;
+	cin >> n;
+	while (n--) {
+		cin >> s;
+		memset(check, false, 26);
+		for (i = 0;i < s.size();i++) {
+			if (check[s[i] - 'a'] != true) {
+				check[s[i] - 'a'] = true;
+				int j = i + 1;
+				while (s[j] == s[i]) j++;
+				i = j - 1;
+			}
+			else break;
+
+		}
+		if (i == s.size()) sum++;
+
+	}
+	cout << sum;
+	return 0;
+}

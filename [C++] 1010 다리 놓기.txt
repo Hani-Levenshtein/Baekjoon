@@ -1,0 +1,24 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int arr[29][30] = { 0 };
+int num(int a, int b) {
+	if (a == b) return 1;
+	else if (b == 1) return a;
+	else if (arr[b][a] != 0) return arr[b][a];
+	else return num(a - 1, b - 1) + num(a - 1, b);
+}
+int main() {
+	int n;
+	cin >> n;
+	int left, right;
+	while (n--) {
+		cin >> left >> right;
+		cout << num(right,left) << '\n';
+
+	}
+	return 0;
+}
