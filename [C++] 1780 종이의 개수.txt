@@ -1,0 +1,38 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include<cstring>
+using namespace std;
+int arr[27*27*3+1][27*27*3+1];
+int Minus = 0, zero = 0,Plus=0;
+void dfs(int s, int g, int out, int arr[][27*27*3+1]) {
+	int p = 0,m=0,z=0;
+
+	for (int i = 1 + s;i <= s + out;i++)for (int j = 1 + g;j <= g + out;j++) {
+		if (arr[i][j] == 1) p++;
+		else if (arr[i][j] == -1) m++;
+		else z++;
+	}
+	if (p == out * out) {
+		Plus++; return;
+	}
+	else if (z == out * out) {
+		zero++; return;
+	}
+	else if (m == out * out) {
+		Minus++; return;
+	}
+	else {
+		for (int i = 0;i <= 2;i++)for (int j = 0;j <= 2;j++)
+			dfs(s + i * out / 3, g + j * out / 3, out / 3, arr);
+	}
+}
+int main() {
+	int n;
+	cin >> n;
+	for (int i = 1;i <= n;i++)for (int j = 1;j <= n;j++) cin >> arr[i][j];
+	dfs(0, 0, n, arr);
+	cout << Minus << '\n' << zero<<'\n'<< Plus;
+	return 0;
+}
