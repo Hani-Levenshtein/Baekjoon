@@ -1,0 +1,52 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+int arr[26][26];
+bool check[26][26] = { false };
+pair<int, int>direction[4] = { {-1,0},{1,0},{0,1} ,{0,-1} };
+queue<pair<int, int> > q;
+int bfs() {
+	int num = 1;
+	while (q.empty() != true) {
+		pair<int, int> p = q.front();
+		q.pop();
+		for (int a = 0;a < 4;a++)
+			if (arr[p.first + direction[a].first][p.second + direction[a].second] == 1 &&
+				check[p.first + direction[a].first][p.second + direction[a].second] == false)
+			{
+				q.push({ p.first + direction[a].first, p.second + direction[a].second });
+				check[p.first + direction[a].first][p.second + direction[a].second] = true;
+				num++;
+			}
+	}
+	return num;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,m=0;
+	string s;
+	cin >> n;
+	vector<int> v;
+	for (int i = 1;i <= n;i++) {
+		cin >> s;
+		for (int j = 1;j <= n;j++)
+			arr[i][j] = s[j-1]-'0';
+	}
+	
+	for (int i = 1;i <= n;i++)for (int j = 1;j <= n;j++) {
+		if (check[i][j] == false && arr[i][j]==1) {
+			q.push({ i,j });
+			check[i][j] = true;
+			v.push_back(bfs());
+			m++;
+		}
+	}
+	sort(v.begin(), v.end());
+	cout << m << '\n';
+	for (int i = 0;i < v.size();i++) cout << v[i] << '\n';
+	return 0;
+}
