@@ -1,0 +1,67 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <tuple>
+using namespace std;
+int arr[102][102][102];
+bool check[102][102][102];
+int x[6] = { 1,-1,0,0,0,0 };
+int y[6] = { 0,0,1,-1,0,0 };
+int z[6] = { 0,0,0,0 ,1,-1};
+queue<tuple<int,int, int>> q;
+int num = 0;
+int day = -1;
+queue<tuple<int, int, int>> t;
+void bfs() {
+	while (q.empty() != true) {
+		while (q.empty() != true) {
+			t.push(q.front());
+			q.pop();
+		}
+		day++;
+		while (t.empty() != true) {
+			tuple<int, int, int> tt = t.front();
+			for (int a = 0;a < 6;a++)
+				if (arr[get<0>(tt) + z[a]][get<1>(tt) + y[a]][get<2>(tt) + x[a]] == 0 &&
+					check[get<0>(tt) + z[a]][get<1>(tt) + y[a]][get<2>(tt) + x[a]] == false)
+				{
+					q.push(make_tuple(get<0>(tt) + z[a], get<1>(tt) + y[a], get<2>(tt) + x[a]));
+					check[get<0>(tt) + z[a]][get<1>(tt) + y[a]][get<2>(tt) + x[a]] = true;
+					arr[get<0>(tt) + z[a]][get<1>(tt) + y[a]][get<2>(tt) + x[a]] = 1;
+					num++;
+				}
+			t.pop();
+		}
+	}
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m,h;
+	int a = 0;
+	
+	for (int i = 0;i < 102;i++)for (int j = 0;j < 102;j++)for (int k = 0;k < 102;k++) {
+		arr[i][j][k] = -1;
+		check[i][j][k] = false;
+	}
+	cin >> m >> n>>h;
+	for (int k = 1;k <= h;k++)
+		for (int j = 1;j <= n;j++)
+			for (int i = 1;i <= m;i++){
+				cin >> arr[k][j][i];
+				if (arr[k][j][i] == 1) {
+					q.push(make_tuple(k, j,i));
+					check[k][j][i] = true;
+					num++;
+				}
+				else if (arr[k][j][i] == -1)a++;
+			}
+	bfs(); 
+	if (num == h*n * m-a) cout << day;
+	else cout << "-1";
+	return 0;
+}
