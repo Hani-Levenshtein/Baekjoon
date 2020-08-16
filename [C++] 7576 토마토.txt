@@ -1,0 +1,62 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+using namespace std;
+int arr[1002][1002];
+bool check[1002][1002];
+pair<int, int>direction[4] = { {-1,0},{1,0},{0,1} ,{0,-1} };
+queue<pair<int, int> > q;
+int num = 0;
+int day = -1;
+pair<int, int> v[1000001];
+void bfs() {
+	while (q.empty() != true) {
+		int b = 0;
+		while (q.empty() != true) {
+			v[b]=q.front();
+			q.pop();
+			b++;
+		}
+		day++;
+		for (int i = 0;i < b;i++) {
+			for (int a = 0;a < 4;a++)
+				if (arr[v[i].first + direction[a].first][v[i].second + direction[a].second] == 0 &&
+					check[v[i].first + direction[a].first][v[i].second + direction[a].second] == false)
+				{
+					q.push({ v[i].first + direction[a].first, v[i].second + direction[a].second });
+					check[v[i].first + direction[a].first][v[i].second + direction[a].second] = true;
+					arr[v[i].first + direction[a].first][v[i].second + direction[a].second] = 1;
+					num++;
+				}
+		}
+	}
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m;
+	int a = 0;
+	cin >> m >> n;
+	for (int i = 0;i < 1002;i++)for (int j = 0;j < 1002;j++) {
+		arr[i][j] = -1;
+		check[i][j] = false;
+	}
+	for (int j = 1;j <= n;j++)
+		for (int i = 1;i <= m;i++) {
+			cin >> arr[j][i];
+			if (arr[j][i] == 1) {
+				q.push({ j,i });
+				check[j][i] = true;
+				num++;
+			}
+			else if (arr[j][i] == -1)a++;
+		}
+	bfs(); 
+	if (num == n * m-a) cout << day;
+	else cout << "-1";
+	return 0;
+}
