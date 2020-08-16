@@ -1,0 +1,47 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+char arr[102][102];
+bool check[102][102];
+pair<int, int>direction[4] = { {-1,0},{1,0},{0,1} ,{0,-1} };
+void dfs(int i, int j) {
+	bool res = false;
+	for (int a = 0;a < 4;a++)
+		if (arr[i + direction[a].first][j + direction[a].second] == arr[i][j] &&
+			check[i + direction[a].first][j + direction[a].second] == false) {
+			res = true;
+			check[i + direction[a].first][j + direction[a].second] = true;
+			dfs(i + direction[a].first, j + direction[a].second);
+		}
+	if (res == false) return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	int RGB = 0,RB=0;
+	for (int i = 0;i < n;i++)for (int j = 0;j < n;j++) cin >> arr[i][j];
+	for (int i = 0;i < n;i++)for (int j = 0;j < n;j++) {
+		if (check[i][j] == false && arr[i][j]) {
+			dfs(i, j);
+			RGB++;
+		}
+	}
+	for (int i = 0;i < n;i++)for (int j = 0;j < n;j++) {
+		check[i][j] = false;
+		if (arr[i][j] == 'G')arr[i][j] = 'R';
+	}
+	for (int i = 0;i < n;i++)for (int j = 0;j < n;j++) {
+		if (check[i][j] == false && arr[i][j]) {
+			dfs(i, j);
+			RB++;
+		}
+	}
+	cout << RGB << " " << RB;
+
+	return 0;
+}
