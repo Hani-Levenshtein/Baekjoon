@@ -1,0 +1,30 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+
+using namespace std;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    vector<char> res;
+    stack<int> middle;
+    cin >> n;
+    int* left = new int[n];
+    for (int i = 0;i < n;i++) cin >> left[i];
+    for (int i = 1, j = 0;i <= n;i++) {
+        middle.push(i);
+        res.push_back('+');
+        while ((middle.empty() != true) && (middle.top() == *(left+j))) {
+            res.push_back('-');
+            middle.pop();
+            j++;
+        }
+    }
+
+    if (middle.empty() != true) cout << "NO";
+    else for (int i = 0;i < (int)res.size();i++) cout << res.at(i) <<'\n';
+    return 0;
+}
+
