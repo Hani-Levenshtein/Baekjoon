@@ -1,0 +1,17 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,m=2;
+	cin >> n;
+	while (n > 1) {
+		if (n % m == 0) {
+			n = n / m;
+			cout << m << '\n';
+		}
+		else m++;
+	}
+	return 0;
+}
