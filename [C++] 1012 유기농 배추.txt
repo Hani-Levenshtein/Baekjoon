@@ -1,0 +1,56 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+using namespace std;
+int  x, y,sum;
+int arr[52][52];
+bool check[52][52];
+queue <pair<int, int>> q;
+pair<int, int> pp,p[4] = { {1,0},{-1,0},{0,1},{0,-1} };
+void bfs() {
+	while (q.empty() != true) {
+		pp=q.front();
+		q.pop();
+
+		for (int i = 0;i < 4;i++) {
+			if (arr[pp.first + p[i].first][pp.second + p[i].second] == 1
+				&& check[pp.first + p[i].first][pp.second + p[i].second] == true) {
+				q.push(make_pair(pp.first + p[i].first, pp.second + p[i].second));
+				check[pp.first + p[i].first][pp.second + p[i].second] = false;
+			}
+		}
+	}
+	sum++;
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int t;
+	cin >> t;
+	int num,X,Y;
+	while (t--) {
+		cin >> x >> y >> num;
+		sum = 0;
+		for (int i = 0;i < 52;i++) {
+			memset(arr[i], 0, sizeof(int) * 52);
+			memset(check[i], true, sizeof(bool)* 52);
+		}
+		for (int i = 0;i < num;i++) {
+			cin >> X >> Y;
+			arr[Y+1][X+1] = 1;
+		}
+		
+		for (int j = 1;j <=y;j++)
+			for (int i = 1;i <= x;i++) {
+			if (arr[j][i] == 1 && check[j][i] ==true) {
+				q.push(make_pair(j, i));
+				check[j][i] = false;
+				bfs();
+			}
+		}
+		cout << sum << '\n';
+	}
+	return 0;
+}
