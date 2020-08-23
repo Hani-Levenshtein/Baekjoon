@@ -1,0 +1,52 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+using namespace std;
+int  sum,c,cc;
+pair<int,int> arr[5000];
+bool check[5000],node[101];
+queue <int> q;
+void bfs() {
+	while (q.empty() != true) {
+		int pp = q.front();
+		q.pop();
+		for (int i = 1;i <= cc;i++) {
+			if (check[i]== true &&pp == arr[i].first) {
+				check[i] = false;
+				q.push(arr[i].second);
+				if (node[arr[i].second] == true) {
+					sum++;
+					node[arr[i].second] = false;
+				}
+			}
+			else if (check[i] == true && pp == arr[i].second) {
+				check[i] = false;
+				q.push(arr[i].first);
+				if (node[arr[i].first] == true) {
+					sum++;
+					node[arr[i].first] = false;
+				}
+			}
+		}
+	}
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int x,y;
+	sum = 0;
+	cin >> c;
+	cin >> cc;
+	memset(check, true, sizeof(bool) * 5000);
+	memset(node, true, sizeof(bool) * 101);
+	for (int i = 1;i <= cc;i++) {
+		cin >> x >> y;
+		arr[i] = make_pair( x,y );
+	}
+	q.push(1);
+	bfs();
+	cout << sum << '\n';
+	return 0;
+}
