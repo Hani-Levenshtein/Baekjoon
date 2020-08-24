@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+using namespace std;
+int totalwolf=0,totalsheep=0,wolf,sheep;
+char arr[252][252];
+bool check[252][252];
+queue <pair<int, int>> q;
+pair<int, int> pp, p[4] = { {1,0},{-1,0},{0,1},{0,-1} };
+void bfs() {
+	wolf = sheep = 0;
+	while (q.empty() != true) {
+		pp = q.front();
+		q.pop();
+		if (arr[pp.first][pp.second] == 'v') wolf++;
+		else if (arr[pp.first][pp.second] == 'o') sheep++;
+		for (int i = 0;i < 4;i++) {
+			if (arr[pp.first + p[i].first][pp.second + p[i].second] != '#'
+				&& check[pp.first + p[i].first][pp.second + p[i].second] == true) {
+				q.push(make_pair(pp.first + p[i].first, pp.second + p[i].second));
+				check[pp.first + p[i].first][pp.second + p[i].second] = false;
+			}
+		}
+	}
+	if (wolf < sheep) totalsheep = totalsheep + sheep;
+	else totalwolf = totalwolf + wolf;
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int x,y;
+	cin >> y >> x;
+	for (int j = 1;j <= y;j++)
+		for (int i = 1;i <= x;i++) {
+			cin >> arr[j][i];
+			check[j][i]=true;
+		}
+
+	for (int j = 1;j <= y;j++)
+		for (int i = 1;i <= x;i++) {
+			if (arr[j][i] != '#' && check[j][i] == true) {
+				q.push(make_pair(j, i));
+				check[j][i] = false;
+				bfs();
+			}
+		}
+	cout << totalsheep << " " << totalwolf;
+	return 0;
+}
