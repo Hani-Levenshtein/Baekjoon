@@ -1,0 +1,48 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <queue>
+using namespace std;
+int n, m,pp,time=0;
+bool check[100001];
+queue <int> q, t;
+void  bfs() {
+	while (q.empty() != true) {
+		while (q.empty() != true) {
+			t.push(q.front());
+			q.pop();
+		}
+		while (t.empty() != true) {
+			pp = t.front();
+			if (pp == m) {
+				cout << time;
+				return;
+
+			}
+
+			if (pp-1>=0 && check[pp - 1] == false) {
+				q.push(pp - 1);
+				check[pp - 1] = true;
+			}
+			if (pp + 1 <= 100000 && check[pp + 1] == false) {
+				q.push(pp + 1);
+				check[pp + 1] = true;
+			}
+			if (pp*2<=100000 && check[pp * 2] == false) {
+				q.push(pp * 2);
+				check[pp * 2] = true;
+			}
+			t.pop();
+		}
+		time++;
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >>m;
+	q.push(n);
+	bfs();
+	return 0;
+}
