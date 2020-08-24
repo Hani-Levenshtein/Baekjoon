@@ -1,0 +1,54 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <queue>
+#include <string.h>
+using namespace std;
+int n, cnt = 0, M = 0, m = 101,mid,flr;
+int dir[4][2] = { {1,0} ,{0,1} ,{-1,0}, {0,-1} };
+bool check[102][102];
+int arr[102][102];
+pair<int, int>pp;
+queue <pair<int,int>> q, t;
+void  bfs() {
+	while (q.empty() != true) {
+		pp = q.front();
+		for (int i = 0;i < 4;i++) {
+			if (check[pp.first + dir[i][0]][pp.second + dir[i][1]] == true &&
+				arr[pp.first + dir[i][0]][pp.second + dir[i][1]] >= mid )
+			{
+				check[pp.first + dir[i][0]][pp.second + dir[i][1]] = false;
+				q.push({ pp.first + dir[i][0],pp.second + dir[i][1] });
+
+			}
+		}
+		q.pop();
+	}
+
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	for (int i = 1;i <= n;i++)for (int j = 1;j <= n;j++) {
+		cin >> arr[i][j];
+		m = min(m, arr[i][j]);
+		M = max(M, arr[i][j]);
+	}
+	for (mid = M;m <= mid;mid--) {
+		flr = 0;
+		for (int i = 1;i <= n;i++)for (int j = 1;j <= n;j++)check[i][j] = true;
+		for (int i = 1;i <= n;i++)
+			for (int j = 1;j <= n;j++)
+				if (arr[i][j] >= mid && check[i][j] == true) {
+					q.push({ i,j });
+					check[i][j] = false;
+					bfs();
+					flr++;
+				}
+		cnt = max(cnt, flr);
+	}
+	cout << cnt;
+	return 0;
+}
