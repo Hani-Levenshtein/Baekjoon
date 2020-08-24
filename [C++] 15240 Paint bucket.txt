@@ -1,0 +1,48 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+using namespace std;
+char arr[1002][1002];
+bool check[1002][1002];
+char cc,c;
+queue <pair<int, int>> q;
+pair<int, int> pp, p[4] = { {1,0},{-1,0},{0,1},{0,-1} };
+void bfs() {
+	while (q.empty() != true) {
+		pp = q.front();
+		q.pop();
+		for (int i = 0;i < 4;i++) {
+			if (arr[pp.first + p[i].first][pp.second + p[i].second] == cc
+				&& check[pp.first + p[i].first][pp.second + p[i].second] == true) {
+				q.push(make_pair(pp.first + p[i].first, pp.second + p[i].second));
+				check[pp.first + p[i].first][pp.second + p[i].second] = false;
+				arr[pp.first + p[i].first][pp.second + p[i].second] = c;
+			}
+		}
+	}
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int x,y,a,b;
+	cin >> y >> x;
+	for (int j = 1;j <= y;j++)
+		for (int i = 1;i <= x;i++) {
+			cin >> arr[j][i];
+			check[j][i]=true;
+		}
+	cin >> a >> b >> c;
+	q.push(make_pair(a+1, b+1));
+	check[a+1][b+1] = false;
+	cc = arr[a + 1][b + 1];
+	arr[a + 1][b + 1] = c;
+	bfs();
+	for (int j = 1;j <= y;j++) {
+		for (int i = 1;i <= x;i++)
+			cout << arr[j][i];
+		cout << '\n';
+	}
+	return 0;
+}
