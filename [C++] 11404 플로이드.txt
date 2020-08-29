@@ -1,0 +1,45 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+typedef long long ll;
+using namespace std;
+int arr[100][100];
+int n,m,s,d,w;
+void init() {
+	for (int i = 0;i < n;i++)
+		for (int j = 0;j < n;j++)
+			if (i != j)arr[i][j] = 987654321;
+			else arr[i][j] = 0;
+}
+void floyd() {
+	for (int via = 0;via < n;via++)
+		for (int start = 0;start < n;start++) {
+			if (arr[start][via] == 987654321) continue;
+			for (int dest = 0;dest < n;dest++)
+				if (arr[start][dest] > arr[start][via] + arr[via][dest])
+					arr[start][dest] = arr[start][via] + arr[via][dest];
+		}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	cin >> m;
+	init();
+	for (int i = 0; i < m;i++) {
+		cin >> s >> d >> w;
+		arr[s-1][d-1] = min(arr[s - 1][d - 1],w);
+	}
+	floyd();
+	for (int i = 0;i < n;i++) {
+		for (int j = 0;j < n;j++) {
+		if (arr[i][j]==987654321) cout << "0 ";
+		else cout << arr[i][j] << " ";
+
+		}
+		cout << '\n';
+	}
+	return 0;
+}

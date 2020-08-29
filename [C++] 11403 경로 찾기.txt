@@ -1,0 +1,29 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+typedef long long ll;
+using namespace std;
+int arr[100][100];
+int n;
+void floyd() {
+	for (int via = 0;via < n;via++)
+		for (int start = 0;start < n;start++)
+			for (int dest = 0;dest < n;dest++)
+				if (arr[start][via] == 1 && arr[via][dest] == 1)
+					arr[start][dest] = 1;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	for (int i = 0;i < n;i++)for (int j = 0;j < n;j++)cin>>arr[i][j];
+	floyd();
+	for (int i = 0;i < n;i++) {
+		for (int j = 0;j < n;j++)
+			cout << arr[i][j] << " ";
+		cout << '\n';
+	}
+	return 0;
+}
