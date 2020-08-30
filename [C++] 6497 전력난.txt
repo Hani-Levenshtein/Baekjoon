@@ -1,0 +1,66 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+typedef long long ll;
+using namespace std;
+
+int Vertex, Edge, v, e, w;
+vector<pair<int, pair<int, int> > >E;
+
+struct DisjointSet {
+	vector <int> Parent, Rank;
+	DisjointSet(int n) :Parent(n), Rank(n, 1) {
+		for (int i = 0;i < n;i++)Parent[i] = i;
+	}
+	int Find_Parent(int u)
+	{
+		if (Parent[u] == u) return u;
+		else return Parent[u] = Find_Parent(Parent[u]);
+	}
+	void Merge(int u, int v)
+	{
+		u = Find_Parent(u);v = Find_Parent(v);
+		if (u == v)return;
+		if (Rank[u] > Rank[v]) swap(u, v);
+		Parent[u] = v;
+		if (Rank[u] == Rank[v]) Rank[v]++;
+	}
+
+};
+
+void kruskal() {
+	
+	for (;;) {
+		int res = 0;
+		cin >> Vertex >> Edge;
+		if (Vertex == 0 && Edge == 0) break;
+		E.clear();
+		for (int i = 0;i < Edge;i++){
+			cin >> v >> e >> w;
+			E.push_back({ w,{ v ,e } });
+			res = res + w;
+		}
+		sort(E.begin(), E.end());
+		DisjointSet sets(Vertex);
+
+		for (int i = 0;i < (int)E.size();i++) {
+			int cost = E[i].first;
+			int from = E[i].second.first;
+			int to = E[i].second.second;
+			if (sets.Find_Parent(from) == sets.Find_Parent(to))continue;
+			else {
+				sets.Merge(from, to);
+				res = res - cost;
+			}
+		}
+		cout << res << '\n';
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	kruskal();
+	return 0;
+}
