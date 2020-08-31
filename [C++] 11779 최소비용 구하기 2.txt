@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+using namespace std;
+int V,E,u,v,e,w,s,d;
+vector <pair<int, int>> adj[1000];
+vector<int> dijkstra(int src) {
+	priority_queue <pair<int, int> > pq;
+	vector<int> dist(V, INT_MAX);
+	vector <int> path[1000];
+	dist[src] = 0;
+	path[src].push_back(src);
+	pq.push({ 0,src });
+	while (pq.empty() != true) {
+		int cost = -pq.top().first;
+		int here = pq.top().second;
+		pq.pop();
+		if (dist[here] < cost) continue;
+		for (int i = 0;i < (int)adj[here].size();i++) {
+			int there = adj[here][i].first;
+			int nextdist = cost + adj[here][i].second;
+			if (dist[there] > nextdist) {
+				dist[there] = nextdist;
+				pq.push({ -nextdist,there });
+				path[there] = path[here];
+				
+				path[there].push_back(there);
+			}
+		}
+	}
+	cout << dist[d - 1] << '\n';
+	cout << path[d - 1].size() << '\n';
+	for(int i=0;i< (int)path[d - 1].size();i++) cout<<path[d-1][i]+1<<" ";
+	return dist;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> V;
+	cin >> E;
+	for (int i = 0;i < E;i++) {
+		cin >> u >> v >> w;;
+		adj[u - 1].push_back(make_pair(v - 1, w));
+	}
+	cin >> s >> d;
+	vector<int> res = dijkstra(s - 1);
+	
+
+
+
+
+	return 0;
+}
