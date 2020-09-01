@@ -1,0 +1,53 @@
+#include iostream
+#include algorithm
+#include queue
+#include string.h
+#define MAX 987654321
+using namespace std;
+int arr[102][102], n,m;
+int dist[102][102];
+pairint, int pp, p[4] = { {1,0}, {0,1}, {-1,0}, {0,-1} };
+queue pairint, int  q;
+void bfs() {
+	while (q.empty() != true) {
+		pp = q.front();
+		q.pop();
+		for (int i = 0;i  4;i++) {
+			if (arr[pp.first + p[i].first][pp.second + p[i].second] == 0) {
+				if (dist[pp.first + p[i].first][pp.second + p[i].second]  dist[pp.first][pp.second]) {
+					q.push({ pp.first + p[i].first,pp.second + p[i].second });
+					dist[pp.first + p[i].first][pp.second + p[i].second] = dist[pp.first][pp.second];
+				}
+			}
+			else if (arr[pp.first + p[i].first][pp.second + p[i].second] == 1) {
+				if (dist[pp.first + p[i].first][pp.second + p[i].second]  dist[pp.first][pp.second] + 1) {
+					q.push({ pp.first + p[i].first,pp.second + p[i].second });
+					dist[pp.first + p[i].first][pp.second + p[i].second] = dist[pp.first][pp.second] + 1;
+				}
+			}
+		}
+	}
+	return;
+}
+int main() {
+	ios_basesync_with_stdio(false);
+	cin.tie(NULL);
+	cin  mn;
+	string s;
+	for (int i = 0;i = n + 1;i++)for (int j = 0;j = m + 1;j++) arr[i][j] = 2;
+	for (int i = 1;i = n;i++) {
+		cin  s;
+		for (int j = 1;j = m;j++) {
+			arr[i][j] = s[j - 1] - '0';
+		}
+	}
+
+	for (int i = 1;i = n;i++)for (int j = 1;j = m;j++) {
+		dist[i][j] = MAX;
+	}
+	dist[1][1] = 0;
+	q.push({ 1,1 });
+	bfs();
+	cout  dist[n][m]  'n';
+	return 0;
+}

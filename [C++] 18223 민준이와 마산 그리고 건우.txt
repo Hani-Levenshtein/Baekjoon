@@ -1,0 +1,44 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+using namespace std;
+#define MAX 987654321
+int v, e, s, d, weight,via;
+vector <pair<int, int>> adj[5000];
+vector<int> dijkstra(int src) {
+	priority_queue <pair<int, int> > pq;
+	vector<int> dist(v, 987654321);
+	dist[src] = 0;
+	pq.push({ 0,src });
+	while (pq.empty() != true) {
+		int cost = -pq.top().first;
+		int here = pq.top().second;
+		pq.pop();
+		if (dist[here] < cost) continue;
+		for (int i = 0;i < (int)adj[here].size();i++) {
+			int there = adj[here][i].first;
+			int nextdist = cost + adj[here][i].second;
+			if (dist[there] > nextdist) {
+				dist[there] = nextdist;
+				pq.push({ -nextdist,there });
+			}
+		}
+	}
+	return dist;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> v >> e>>via;
+	for (int i = 0;i < e;i++) {
+		cin >> s >> d >> weight;
+		adj[s - 1].push_back(make_pair(d - 1, weight));
+		adj[d - 1].push_back(make_pair(s - 1, weight));
+	}
+	if (dijkstra(0)[v - 1] == dijkstra(0)[via - 1] + dijkstra(via-1)[v - 1])
+		cout << "SAVE HIM";
+	else cout << "GOOD BYE";
+	return 0;
+}
