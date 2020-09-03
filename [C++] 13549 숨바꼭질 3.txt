@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+typedef long long ll;
+using namespace std;
+int V, E, W, v, e;
+bool check[100001];
+void dijkstra(int src) {
+	priority_queue <pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > q, t;
+	pair<int, int> p;
+	q.push({ 0,src });
+	check[src] = true;
+	while (q.empty() != true) {
+		p = q.top();
+		if (p.second == e) break;
+		q.pop();
+		if (p.second * 2 <= 100000 && check[p.second * 2] == false) {
+			q.push({ p.first,p.second * 2 });
+			check[p.second * 2] = true;
+		}
+		if (p.second + 1 <= 100000 && check[p.second + 1] == false) {
+			q.push({ p.first + 1,p.second + 1 });
+			check[p.second + 1] = true;
+		}
+		if (0 <= p.second - 1 && check[p.second - 1] == false) {
+			q.push({ p.first + 1,p.second - 1 });
+			check[p.second - 1] = true;
+		}
+	}
+	cout << p.first;
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> v >> e;
+	dijkstra(v);
+	return 0;
+}
