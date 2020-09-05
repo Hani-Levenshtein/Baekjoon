@@ -8,19 +8,19 @@ using namespace std;
 int V, E,v,e,weight;
 vector <pair<int, int> >adj[500];//V개의 노드에 연결될 간선
 vector <ll> bellman(int src) {
-	vector <ll> srctodesti(V, 987654321);//src노드에서 각 노드로의 최소비용
-	srctodesti[src] = 0;//시작점에서 시작점으로의 거리
-	bool check = false;//완화에 성공했는지 여부
-	for (int iter = 0;iter < V;iter++) { //(v-1)+1 번 검사.. 마지막검사가 음수 사이클을 판별할 것
-		check = false;//완화에 성공한다면 true로 바뀜
-		for (int here = 0;here < V;here++) {//V개 노드를 순차적으로 검사
-			if (srctodesti[here] == 987654321) continue; //시작점과 연결되지않은 노드라면 넘어감
-			for (int num = 0;num < (int)adj[here].size();num++) {//해당노드의 모든 간선을 검사
+	vector <ll> srctodesti(V, 987654321);
+	srctodesti[src] = 0;
+	bool check = false;
+	for (int iter = 0;iter < V;iter++) { 
+		check = false;
+		for (int here = 0;here < V;here++) {
+			if (srctodesti[here] == 987654321) continue;
+			for (int num = 0;num < (int)adj[here].size();num++) {
 				int there = adj[here][num].first;
 				int cost = adj[here][num].second; 
-				if (srctodesti[there] > srctodesti[here] + cost) {//더 작은 비용의 경로가 있다면
-					srctodesti[there] = srctodesti[here] + cost; // 그 경로로 바꿔줌
-					check = true;//완화성공
+				if (srctodesti[there] > srctodesti[here] + cost) {
+					srctodesti[there] = srctodesti[here] + cost;
+					check = true;
 				}
 			}
 		}
