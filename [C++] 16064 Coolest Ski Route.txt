@@ -1,0 +1,43 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+typedef long long ll;
+using namespace std;
+#define MAX 987654321
+int adj[1001][1001];
+int V, E, u, v, w,res=0;
+void floyd() {
+	for (int via = 1;via <= V;via++) {
+		for (int start = 1;start <= V;start++) {
+			if (adj[start][via] == MAX) continue;
+			for (int dest = 1;dest <= V;dest++) {
+				if (adj[via][dest] == MAX) continue;
+				if (adj[start][dest] > adj[start][via] + adj[via][dest]) 
+				{
+					adj[start][dest] = adj[start][via] + adj[via][dest];
+					res = min(res, adj[start][dest]);
+				}
+			}
+		}
+	}
+
+}
+
+int main() {
+	cin >> V >> E;
+	for (int start = 1;start <= V;start++)
+		for (int dest = 1;dest <= V;dest++)
+			adj[start][dest] = MAX;
+
+	for (int i = 1;i <= E;i++) {
+		cin >> u >> v >> w;
+		adj[u][v]=min(adj[u][v],-w);
+		res = min(res, adj[u][v]);
+	}
+	floyd();
+	cout << -res;
+	return 0;
+}
