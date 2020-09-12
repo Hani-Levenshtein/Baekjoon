@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+typedef long long ll;
+using namespace std;
+#define MAX 987654321
+int L, R;
+#define left_max 1000
+#define right_max 1000
+bool adj[left_max][right_max];
+vector<int> leftmatch, rightmatch;
+vector<bool> visited;
+
+bool dfs(int l) {
+    if (visited[l]) return false;
+    visited[l] = true;
+    for (int r = 0;r < R;r++) {
+        if (adj[l][r]) {
+            if (rightmatch[r] == -1 || dfs(rightmatch[r])) {
+                leftmatch[l] = r; rightmatch[r] = l; return true;
+            }
+
+        }
+    }
+    return false;
+}
+
+int match() {
+   leftmatch = vector<int>(L, -1); rightmatch = vector<int>(R, -1);
+    int size = 0;
+    for (int l = 0;l < L;l++) {
+        visited = vector<bool>(L, false);
+        if (dfs(l)) size++;
+    }
+    return size;
+}
+int main() {
+    cin >> L>>R;
+    int t,m;
+    for (int i = 0;i < L;i++) {
+        cin >> t;
+        while (t--) {
+            cin >> m;
+            adj[i][m-1] = true;
+        }
+    }
+    cout << match();
+    return 0;
+
+}
