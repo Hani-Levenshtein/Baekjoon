@@ -1,0 +1,44 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+bool checked[1000001];
+int n;
+int bfs() {
+	queue<int> q,r;
+	q.push(n);
+	checked[n] = true;
+	int res = 0;
+	while (q.empty() != true) {
+		while (q.empty() != true) {
+			r.push(q.front());
+			q.pop();
+		}
+		while (r.empty() != true) {
+			int t = r.front();
+			r.pop();
+			if (t == 1) return res;
+			if (t % 3 == 0 && checked[t / 3] == false) {
+				checked[t / 3] = true; q.push(t / 3);
+			}
+			if (t % 2 == 0 && checked[t / 2] == false) {
+				checked[t / 2] = true; q.push(t / 2);
+			}
+			if (checked[t - 1] == false) {
+				checked[t - 1] = true; q.push(t - 1);
+			}
+		}
+		res++;
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	cin >> n;
+	cout<<bfs();
+	return 0;
+}
