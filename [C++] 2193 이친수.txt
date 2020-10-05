@@ -1,0 +1,24 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+typedef long long ll;
+using namespace std;
+int n,arr[91];
+void dp() {
+	ll res = 1;
+	ll before = 0,temp;
+	for (int i = 2;i <= n;i++) {
+		temp = res;
+		res = res + before;
+		before = temp;
+	}
+	cout << res;
+}
+int main() {
+	cin >> n;
+	dp();
+	return 0;
+}
