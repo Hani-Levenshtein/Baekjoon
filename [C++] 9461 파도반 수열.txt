@@ -1,0 +1,29 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+typedef long long ll;
+using namespace std;
+ll n, arr[101];
+void dp() {
+	arr[1] = arr[2] = arr[3] = 1;
+	arr[4] = arr[5] = 2;
+	if (arr[n] != 0) cout << arr[n]<<'\n';
+	else {
+		for (ll i = 6;i <= n;i++) {
+			arr[i] = arr[i - 2] + arr[i - 3];
+		}
+		cout << arr[n]<<'\n';
+	}
+}
+int main() {
+	int t;
+	cin >> t;
+	while (t--) {
+		cin >> n;
+		dp();
+	}
+	return 0;
+}
