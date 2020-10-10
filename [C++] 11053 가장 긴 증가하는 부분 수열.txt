@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+typedef long long ll;
+using namespace std;
+int arr[1001], dp[1001];
+int search(int n) {
+	int res = 0;
+	dp[1] = arr[1];
+	dp[0] = -1;
+	for (int i = 1;i <= n;i++) {
+		for (int j = res;0 <= j;j--) {
+			if (dp[j] < arr[i]) {
+				dp[j + 1] = arr[i];
+				if (j == res ) res++;
+				break;
+			}
+		}
+
+	}
+	return res;
+}
+int main() {
+	int n;
+	cin >> n;
+	for (int i = 1;i <= n;i++) cin >> arr[i];
+	cout << search(n);
+
+	return 0;
+}
