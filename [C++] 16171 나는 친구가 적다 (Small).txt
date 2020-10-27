@@ -1,0 +1,45 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+typedef long long ll;
+using namespace std;
+vector<int> getPi(string sub) {
+	vector<int> pi(sub.size(), 0);
+	for (int i = 1, j = 0; i < sub.size(); i++) {
+		while (j > 0 && sub[i] != sub[j]) j = pi[--j];
+		if (sub[i] == sub[j]) pi[i] = ++j;
+	}
+	return pi;
+}
+void kmp(string target, string sub) {
+	vector<int> pi = getPi(sub);
+	for (int i = 0, j = 0; i < target.size(); i++) {
+		while (j > 0 && target[i] != sub[j]) j = pi[--j];
+		if (target[i] == sub[j]) {
+			if (j+1 == sub.size()) {
+				cout << "1";
+				return;
+			}
+			else j++;
+		}
+	}
+	cout << "0";
+	return;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false), cin.tie(nullptr);
+	string t, sub,target;
+	cin >> t;
+	cin >> sub;
+	for (int i = 0;i < t.size();i++)
+		if ('9' < t[i] || t[i] < '0') target = target + t[i];
+	kmp(target, sub);
+	return 0;
+}
