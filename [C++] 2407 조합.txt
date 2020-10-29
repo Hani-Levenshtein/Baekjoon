@@ -1,0 +1,52 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+string arr[101][101];
+string bigadd(string a, string b) {
+	string c;
+	int as, bs;
+	int bit = 0;
+	while (!a.empty() && !b.empty()) {
+		as = a.back() - '0'; bs = b.back() - '0';
+		c = (char)(((as + bs + bit) % 10) + '0') + c;
+		bit = (as + bs + bit) / 10;
+		a.pop_back();b.pop_back();
+	}
+	while (!a.empty()) {
+		as = a.back() - '0';
+		c = (char)(((as + bit) % 10) + '0') + c;
+		bit = (as + bit) / 10;
+		a.pop_back();
+	}
+	while (!b.empty()) {
+		bs = b.back() - '0';
+		c = (char)(((bs + bit) % 10) + '0') + c;
+		bit = (bs + bit) / 10;
+		b.pop_back();
+	}
+	if (bit == 1)c = (char)(bit + '0') + c;
+	return c;
+}
+string combination(int n, int m) {
+	if (arr[n][m]!="") return arr[n][m];
+	else return arr[n][m]=bigadd(combination(n - 1, m - 1), combination(n - 1, m));
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1;i <= 100;i++)arr[i][i]=arr[i][0] = '1';
+	cout << combination(n, m);
+	return 0;
+}
