@@ -1,0 +1,36 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+int arr[2][100001], sum[2][100001];
+void solve(int n) {
+	sum[0][0] = arr[0][0], sum[1][0] = arr[1][0];
+	for (int j = 0;j < n-1;j++) {
+		sum[0][j + 2] = max(sum[0][j + 2], sum[1][j] + arr[0][j + 2]);
+		sum[0][j + 1] = max(sum[0][j + 1], sum[1][j] + arr[0][j + 1]);
+		sum[1][j + 2] = max(sum[1][j + 2], sum[0][j] + arr[1][j + 2]);
+		sum[1][j + 1] = max(sum[1][j + 1], sum[0][j] + arr[1][j + 1]);
+	}
+	cout << max(sum[0][n - 1], sum[1][n - 1]) << '\n';
+	memset(sum, 0, sizeof(sum));
+}
+int main() {
+	ios_base::sync_with_stdio(false), cin.tie(nullptr);
+	int t, n;
+	cin >> t;
+	while (t--) {
+		cin >> n;
+		for (int i = 0;i < 2;i++)for (int j = 0;j < n;j++) cin >> arr[i][j];
+		solve(n);
+
+	}
+	return 0;
+}
