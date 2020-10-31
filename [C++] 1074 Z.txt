@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+int n, a, b;
+ll cnt = 0;
+bool flag = false;
+void quad(int n, int y, int x) {
+    if (n == 1) return;
+    else if (a <= y+n / 2 && b <=x+ n / 2) {
+        quad(n / 2, y, x);
+    }
+    else if (a <=y+n / 2 && b >x+ n / 2) {
+        cnt = cnt + 1LL * n * n / 4;
+        quad(n / 2, y, x + n / 2);
+    }
+    else if (a > y+n / 2 && b <= x+n / 2) {
+        cnt = cnt + 2LL * n * n / 4;
+        quad(n / 2, y + n / 2, x);
+    }
+    else {
+        cnt = cnt + 3LL * n * n / 4;
+        quad(n / 2, y + n / 2, x + n / 2);
+    }
+}
+int main() {
+    ios_base::sync_with_stdio(false), cin.tie(nullptr);
+    cin >> n >> a >> b;
+    a++, b++;
+    quad(pow(2,n), 0, 0);
+    cout << cnt;
+    return 0;
+}
