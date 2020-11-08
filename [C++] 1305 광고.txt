@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+vector<int> getPi(string sub) {
+	vector<int> pi(sub.size(), 0);
+	for (int sur = 1, pre = 0; sur < sub.size(); sur++) {
+		while (pre > 0 && sub[sur] != sub[pre]) pre = pi[--pre];
+		if (sub[sur] == sub[pre]) pi[sur] = ++pre;
+	}
+	return pi;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false), cin.tie(nullptr);
+	string sub;
+	int n;
+	cin >> n;
+	cin >> sub;
+	vector<int> res =getPi(sub);
+	cout << n - res[res.size() - 1];
+	return 0;
+}
