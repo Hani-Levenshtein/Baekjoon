@@ -1,0 +1,86 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+int n, m, k;
+vector<ll> tree, arr,lazy;
+void input() {
+	cin >> n;
+	arr.resize(n);
+	tree.resize(4 * n);
+	lazy.resize(4 * n);
+	for (int i = 0;i < n;i++) cin >> arr[i];
+}
+
+ll init(int i, int S, int E) {
+	if (S == E) return tree[i] = arr[S];
+	else return tree[i] = init(2 * i, S, (S + E) / 2)
+		+ init(2 * i + 1, (S + E) / 2 + 1, E);
+}
+
+void update_lazy(int i, int S, int E) {
+	if (lazy[i] != 0) {
+		tree[i] += (E - S + 1) * lazy[i];
+		if (S != E) {
+			lazy[2 * i] += lazy[i];
+			lazy[2 * i + 1] += lazy[i];
+		}
+		lazy[i] = 0;
+	}
+}
+
+void update_range(int i, int S, int E, int L,int R, ll val) {
+	update_lazy(i, S, E);
+	if (E < L || R < S) return;
+	if (L <= S && E <= R) {
+		tree[i] += (E - S + 1) * val;
+		if (S != E) {
+			lazy[2 * i] += val;
+			lazy[2 * i + 1] += val;
+		}
+		return;
+	}
+	update_range(2 * i, S, (S + E) / 2, L, R,val);
+	update_range(2 * i + 1, (S + E) / 2 + 1, E, L, R,val);
+	tree[i] = tree[2 * i] + tree[2 * i + 1];
+}
+
+ll query(int i, int S, int E, int idx) {
+	update_lazy(i, S, E);
+	if (E < idx || idx < S) return tree[i];
+	if (S != E)
+		return query(2 * i, S, (S + E) / 2, idx)
+		+ query(2 * i + 1, (S + E) / 2 + 1, E, idx);
+	else return 0;
+}
+void output() {
+	int a, b, c, d;
+	cin >> m;
+	for (int i = 0;i < m ;i++) {
+		cin >> a;
+		if (a == 1) {
+			cin >> b >> c >> d;
+			update_range(1, 0, n - 1, b - 1, c - 1, d);
+		}
+		else {
+			cin >> b;
+			cout << tree[1]-query(1,0,n-1,b-1) << '\n';
+		}
+	}
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	input();
+	init(1, 0, n - 1);
+	output();
+	return 0;
+}
