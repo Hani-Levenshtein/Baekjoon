@@ -1,0 +1,64 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+int n, m, v;
+int graph[1001][1001];
+bool dfsvisit[1001], bfsvisit[1001];
+void input() {
+	cin >> n >> m >> v;
+	int S, E;
+	for (int i = 0;i < m;i++) {
+		cin >> S >> E;
+		graph[S][E]++;
+		graph[E][S]++;
+	}
+}
+
+void dfs(int a) {
+	cout << a << " ";
+	dfsvisit[a] = true;
+	for (int i = 1;i <= n;i++) {
+		if (graph[a][i] != 0 && dfsvisit[i] == false) {
+			dfsvisit[i] = true;
+			dfs(i);
+		
+		}
+	}
+	return;
+}
+
+void bfs() {
+	queue <int> q;
+	q.push(v);
+	bfsvisit[v] = true;
+	while (q.empty() != true) {
+		int t = q.front();
+		q.pop();
+		for (int i = 1;i <= n;i++) {
+			if (graph[t][i] != 0 && bfsvisit[i] == false) {
+				q.push(i);
+				bfsvisit[i] = true;
+			}
+		}
+		cout << t << " ";
+	}
+	cout << '\n';
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	input();
+	dfs(v);
+	cout << '\n';
+	bfs();
+	return 0;
+}
