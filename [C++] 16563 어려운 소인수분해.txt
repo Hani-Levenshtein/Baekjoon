@@ -1,0 +1,47 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+int arr[5000001],n;
+void era() {
+	for (int i = 1;i <=5000000;i++) arr[i] = i;
+	for (int i = 2;i <= sqrt(5000000);i++) {
+		if(arr[i]==i)
+			for (int j = i * i;j <= 5000000;j += i) {
+				if (arr[j] == j)
+					arr[j] = i;
+			}
+	}
+}
+
+vector<int> prime(int x) {
+	vector<int> res;
+	while (x != 1) {
+		res.push_back(arr[x]);
+		x = x / arr[x];
+	}
+	return res;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	era();
+	int m;
+	for (int i = 0;i < n;i++) {
+		cin >> m;
+		vector<int> res = prime(m);
+		for (auto a : res)cout << a<< " ";
+		cout << '\n';
+	}
+	return 0;
+}
