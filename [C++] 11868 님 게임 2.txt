@@ -24,5 +24,6 @@ int main() {
 	for (int i = 1;i < n;i++)
 		res = res ^ v[i];
 	if (res == 0) cout << "cubelover";
+	else cout << "koosaga";
 	return 0;
 }
