@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+typedef long long ll;
+using namespace std;
+int n, m,u,v,w;
+vector<pii> adj[100000];
+bool checked[100000];
+priority_queue<pii,vector<pii>,greater<pii>> pq;
+vector<int> res;
+vector<int> prim() {
+	checked[0] = true;
+	for (auto there : adj[0])
+		if (checked[there.second] == false)
+			pq.push(there);
+	while (pq.empty() != true) {
+		int there = pq.top().second;
+		int cost = pq.top().first;
+		pq.pop();
+		if (checked[there] == true) continue;
+		checked[there] = true;
+		res.push_back(cost);
+		for (auto there : adj[there])
+			if (checked[there.second] == false)
+				pq.push(there);
+	}
+
+	return res;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+	for (int i = 0;i < m;i++) {
+		cin >> u >> v >> w;
+		adj[u - 1].push_back({w,v-1 });
+		adj[v - 1].push_back({w,u-1 });
+	}
+	vector<int> res = prim();
+	sort(all(res));
+	int ret = 0;
+	for (int i = 0;i < (int)res.size() - 1;i++)ret += res[i];
+	cout << ret;
+	return 0;
+}
