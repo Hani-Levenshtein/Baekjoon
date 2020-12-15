@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+typedef long long ll;
+using namespace std;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	string s;
+	cin >> s;
+	int total = 0;
+	for (int i = 0;i < s.size();i++) {
+		if (s[i] == 'c' && i+1<s.size() && (s[i+1] == '='|| s[i+1]=='-')) {
+			i++; 
+		}
+		else if((s[i] =='s' ||s[i]=='z') && i + 1 < s.size() && s[i+1]=='=') {
+			i++; 
+		}
+		else if ((s[i] == 'l' || s[i] == 'n') && i + 1 < s.size() && s[i + 1] == 'j') {
+			i++; 
+		}
+		else if (s[i] == 'd' && i + 1 < s.size() && s[i+1]=='-') {
+			i++;
+		}
+		else if (s[i] == 'd' && i + 2 < s.size() && s[i + 1] == 'z' && s[i + 2] == '=') {
+			i=i+2; 
+		}
+		total++;
+	}
+	cout << total;
+	return 0;
+}
