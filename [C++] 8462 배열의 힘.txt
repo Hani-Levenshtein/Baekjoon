@@ -1,0 +1,69 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+typedef long long ll;
+using namespace std;
+int n, m,sqrtn;
+ll arr[100001];
+ll cnt[1000001];
+
+ll sum = 0;
+void add(ll a) {
+	sum = sum - cnt[a] * cnt[a] * a;
+	cnt[a]++;
+	sum = sum + cnt[a] * cnt[a] * a;
+}
+
+void sub(ll a) {
+	sum = sum - cnt[a] * cnt[a] * a;
+	cnt[a]--;
+	sum = sum + cnt[a] * cnt[a] * a;
+}
+
+struct query {
+	int idx, i, j;
+};
+bool compare(query& x,query& y) {
+	if (x.i / sqrtn != y.i / sqrtn) return x.i / sqrtn < y.i / sqrtn;
+	return x.j < y.j;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n>>m;
+	sqrtn = (int)sqrt(n);
+	for (int i = 0;i < n;i++)cin >> arr[i];
+	vector<query> q(m);
+	vector<ll>res(m);
+	int x, y;
+	for (int a = 0;a < m;a++) {
+		cin >> x >> y;
+		q[a] = {a,x-1,y-1};
+	}
+
+	sort(q.begin(), q.end(),compare);
+
+	int s = q[0].i, e = q[0].j;
+	for (int a = s;a <= e;a++) add(arr[a]);
+	res[q[0].idx] = sum;
+
+	for (int a = 1;a < m;a++) {
+		while (q[a].i < s)add(arr[--s]);
+		while (q[a].j > e)add(arr[++e]);
+		while (q[a].i > s)sub(arr[s++]);
+		while (q[a].j < e)sub(arr[e--]);
+		res[q[a].idx] = sum;
+	}
+	for (int i = 0;i < m;i++) cout << res[i] << '\n';
+	return 0;
+}
