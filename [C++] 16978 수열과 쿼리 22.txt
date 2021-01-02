@@ -1,0 +1,98 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+int n, m;
+int L, R;
+vector<ll> arr;
+vector<ll> tree;
+typedef struct quest {
+	int idx, k, i, j;
+}quest;
+
+typedef struct modify {
+	int i,v;
+}modify;
+
+bool compare(quest& x, quest& y) {
+	return x.k < y.k;
+}
+
+vector<modify> mdf;
+vector<quest> qry;
+vector<ll> res;
+ll init(int i,int S,int E) {
+	if (S == E) return tree[i] = arr[S];
+	return tree[i] = init(2 * i, S, (S + E) / 2) + init(2 * i + 1, (S + E) / 2 + 1, E);
+}
+
+void update(int i,int S,int E,int idx, ll gap) {
+	if (S == idx && idx==E) {
+		tree[i] += gap;
+		arr[idx] += gap;
+		return;
+	}
+	else if (E < idx || idx < S) return;
+	tree[i] += gap;
+	update(2 * i, S, (S + E) / 2, idx, gap);
+	update(2 * i+1, (S + E) / 2+1,E, idx, gap);
+}
+
+
+ll sum(int i, int S, int E) {
+	if (E < L || R < S) return 0;
+	else if (L <= S && E <= R) return tree[i];
+	else return sum(2 * i, S, (S + E) / 2) + sum(2 * i + 1, (S + E) / 2+1, E);
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	arr.resize(n);
+	for (int i = 0;i < n;i++) cin >> arr[i];
+	tree.resize(4 * n);
+	init(1, 0, n - 1);
+	cin >> m;
+	int a, b, c, d;
+	for (int i = 0;i < m;i++) {
+		cin >> a;
+		if (a == 1) {
+			cin >> b >> c;
+			mdf.push_back({ b - 1,c });
+		}
+		else {
+			cin >> b >> c >> d;
+			qry.push_back({(int)qry.size(),b,c-1,d-1});
+		}
+	}
+	sort(qry.begin(), qry.end(), compare);
+	res.resize((int)qry.size());
+
+	for (int i = 0, j=0;i < qry.size();i++) {
+		while (j < qry[i].k) {
+			update(1, 0, n - 1,mdf[j].i,mdf[j].v-arr[mdf[j].i]);
+			j++;
+		}
+
+		L = qry[i].i, R = qry[i].j;
+		int idx = qry[i].idx;
+		res[idx] = sum(1, 0, n - 1);
+	}
+
+	for (int i = 0;i < res.size();i++) cout << res[i] << '\n';
+
+	return 0;
+}
