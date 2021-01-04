@@ -1,0 +1,56 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+vector<pii> v[10001];
+int res[10001];
+int sum[10001];
+void dfs(int n) {
+	if (v[n].size() == 0) {
+		res[n] = 0;
+		sum[n] = 0;
+		return;
+	}
+	else if (v[n].size() == 1) {
+		dfs(v[n][0].first);
+		res[n] = v[n][0].second + res[v[n][0].first];
+		sum[n] = v[n][0].second + sum[v[n][0].first];
+	}
+	else if (v[n].size() == 2) {
+		dfs(v[n][0].first);
+		dfs(v[n][1].first);
+		res[n] = v[n][0].second + res[v[n][0].first] + v[n][1].second + res[v[n][1].first];
+		res[n] = max(v[n][0].second + res[v[n][0].first], v[n][1].second + res[v[n][1].first]);
+	}
+	else return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,a,b,c;
+	cin >> n;
+	for (int i = 1;i < n;i++) {
+		cin >> a >> b >> c;
+		v[a].push_back({ b,c });
+	}
+	dfs(1);
+	int m = INT_MIN;
+	for (int i = 0;i < n;i++) {
+		if (m < res[i]) m = res[i];
+	}
+	cout << m;
+	return 0;
+}

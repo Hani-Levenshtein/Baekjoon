@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+struct Node {
+	int data;
+	Node* left;
+	Node* right;
+};
+
+Node* insert(Node* node, int data) {
+	if (node == NULL) {
+		node = new Node();
+		node->data = data;
+		node->left = node->right = NULL;
+	}
+	else if (data <= node->data)
+		node->left = insert(node->left, data);
+	else
+		node->right = insert(node->right, data);
+	return node;
+}
+
+void postorder(Node* node) {
+	if (node->left != NULL)
+		postorder(node->left);
+	if (node->right != NULL)
+		postorder(node->right);
+	cout << node->data << '\n';
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	Node* root = NULL;
+	int n;
+	while (cin >> n) {
+		 root = insert(root, n);
+	}
+	postorder(root);
+	return 0;
+}
