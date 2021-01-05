@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	map<string, int> stringtonum;
+	vector<string> numtostring;
+	int n,m;
+	string s;
+	cin >> n >> m;
+	numtostring.push_back("head");
+	for (int i = 1;i <= n;i++) {
+		cin >> s;
+		stringtonum.insert({ s,i });
+		numtostring.push_back(s);
+	}
+	for (int i = 0;i < m;i++) {
+		cin >> s;
+		if ('A' <= s[0] && s[0] <= 'Z') cout << stringtonum[s] << '\n';
+		else cout << numtostring[stoi(s)] << '\n';
+
+	}
+	return 0;
+}
