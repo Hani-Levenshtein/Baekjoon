@@ -1,0 +1,45 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int arr[3][100001];
+int temp[3];
+int maxi[3];
+int mini[3];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	for (int i = 1;i <= n;i++) cin >> arr[0][i] >> arr[1][i] >> arr[2][i];
+	for (int i = 1;i <= n;i++) {
+		temp[0] = max(maxi[0], maxi[1]) + arr[0][i];
+		temp[1] = max({ maxi[0], maxi[1], maxi[2] }) + arr[1][i];
+		temp[2] = max(maxi[2], maxi[1]) + arr[2][i];
+
+		maxi[0] = temp[0], maxi[1] = temp[1], maxi[2] = temp[2];
+
+		temp[0] = min(mini[0], mini[1]) + arr[0][i];
+		temp[1] = min({ mini[0], mini[1], mini[2] }) + arr[1][i];
+		temp[2] = min(mini[2], mini[1]) + arr[2][i];
+
+		mini[0] = temp[0], mini[1] = temp[1], mini[2] = temp[2];
+	}
+
+	cout << max({ maxi[0] ,maxi[1] ,maxi[2] }) << " " << min({ mini[0] ,mini[1],mini[2] });
+
+	return 0;
+}
