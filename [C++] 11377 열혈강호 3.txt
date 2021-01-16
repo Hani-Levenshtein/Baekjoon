@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int n, m, u, k, num, cnt = 0;
+vector<int> path[1001];
+vector<bool> chk;
+vector<int>parent;
+bool dfs(int left) {
+	if (chk[left]) return false;
+	chk[left] = true;
+	for (auto &right:path[left]) {
+		if (parent[right] == 0 || dfs(parent[right])) {
+			parent[right] = left;
+			return true;
+		}
+	}
+	return false;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	cin >> n >> m >> k;
+	chk.resize(n + 1, false);
+	parent.resize(m + 1, 0);
+	for (int i = 1;i <= n;i++) {
+		cin >> num;
+		for (int j = 0;j < num;j++) {
+			cin >> u;
+			path[i].push_back(u);
+		}
+	}
+
+	for (int i = 1;i <= n;i++) {
+		chk = vector<bool>(n + 1, false);
+		if (dfs(i)) cnt++;
+	}
+	for (int i = 1;i <= n;i++) {
+		chk = vector<bool>(n + 1, false);
+		if (0 < k && dfs(i)) {
+			cnt++;
+			k--;
+		}
+	}
+	cout << cnt;
+	return 0;
+}
