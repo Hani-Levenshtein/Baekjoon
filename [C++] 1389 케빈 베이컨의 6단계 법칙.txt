@@ -1,0 +1,60 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+int n, m,u,v;
+int arr[100][100];
+
+void floyd() {
+	for(int via=0;via<n;via++)
+		for (int start = 0;start < n;start++)
+			for (int dest = 0;dest < n;dest++) 
+				if (arr[start][dest] > arr[start][via] + arr[via][dest])
+					arr[start][dest] = arr[start][via] + arr[via][dest];
+			
+	int sum[100];
+	memset(sum, 0, sizeof(sum));
+	int val = INT_MAX;
+	int res = 0;
+	for (int i = 0;i < n;i++) {
+		for (int j = 0;j < n;j++) {
+			sum[i] += arr[i][j];
+		}
+		if (val > sum[i]) {
+			val = sum[i];
+			res = i + 1;
+		}
+	}
+	cout << res;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+	for (int i = 0;i < n;i++)
+		for (int j = 0;j < n;j++)
+			if (i != j) arr[i][j] = 987654321;
+			else arr[i][j] = 0;
+
+	for (int i = 0;i < m;i++) {
+		cin >> u >> v;
+		arr[u - 1][v - 1] = 1;
+		arr[v - 1][u - 1] = 1;
+	}
+	floyd();
+
+	return 0;
+}
