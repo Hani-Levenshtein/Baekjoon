@@ -1,0 +1,75 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+
+int arr[506][506];
+int block[19][4][2] = {
+	//ㅡ
+	{{0, 0}, {0, 1}, {0, 2}, {0, 3}},
+	{{0, 0}, {1, 0}, {2, 0}, {3, 0}},
+
+	//ㅁ
+	{{0, 0}, {0, 1}, {1, 0}, {1, 1}},
+
+	//ㄴ
+	{{0, 0}, {1, 0}, {2, 0}, {2, 1}},
+	{{0, 0}, {1, 0}, {2, 0}, {2, -1}},
+	{{0, 0}, {1, 0}, {0, 1}, {0, 2}},
+	{{0, 0}, {0, 1}, {0, 2}, {-1, 2}},
+	{{0, 0}, {1, 0}, {2, 0}, {0, 1}},
+	{{0, 0}, {0, 1}, {0, 2}, {1, 2}},
+	{{0, 0}, {1, 0}, {1, 1}, {1, 2}},
+	{{0, 0}, {0, 1}, {1, 1}, {2, 1}},
+
+	//ㄹ
+	{{0, 0}, {1, 0}, {1, 1}, {2, 1}},
+	{{0, 0}, {0, 1}, {-1, 1}, {-1, 2}},
+	{{0, 0}, {1, 0}, {0, 1}, {-1, 1}},
+	{{0, 0}, {0, 1}, {1, 1}, {1, 2}},
+
+	//ㅗ
+	{{0, 0}, {0, 1}, {0, 2}, {1, 1}},
+	{{0, 0}, {0, 1}, {1, 1}, {-1, 1}},
+	{{0, 0}, {0, 1}, {0, 2}, {-1, 1}},
+	{{0, 0}, {1, 0}, {2, 0}, {1, 1}},
+};
+
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m;
+	cin >> n >> m;
+
+	for (int y = 3; y < n+3; y++) {
+		for (int x = 3; x < m+3; x++) {
+			cin >> arr[y][x];
+		}
+	}
+
+	int res = 0;
+	for (int i = 0; i < 19; i++)
+		for (int y = 3; y < n+3; y++) 
+			for (int x = 3; x < m+3; x++) {
+				int sum = 0;
+				for (int t = 0; t < 4; t++) {
+					int ny = y + block[i][t][0];
+					int nx = x + block[i][t][1];
+					sum += arr[ny][nx];
+				}
+				res = max(res, sum);
+			}
+
+	cout << res << endl;
+
+	return 0;
+}

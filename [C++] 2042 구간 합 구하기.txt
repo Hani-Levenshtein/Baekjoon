@@ -11,7 +11,7 @@
 typedef long long ll;
 using namespace std;
 int n, m, k;
-vector<ll> tree,arr;
+vector<ll> tree, arr;
 void input() {
 	cin >> n >> m >> k;
 	arr.resize(n);
@@ -19,43 +19,48 @@ void input() {
 	for (int i = 0;i < n;i++) cin >> arr[i];
 }
 
-ll init(int i,int S,int E) {
-	if (S == E) return tree[i] = arr[S];
-	else return tree[i] = init( 2 * i, S, (S + E) / 2)
-		+ init(2 * i + 1, (S + E) / 2 + 1, E);
+ll init(vector<ll>& v, vector<ll>& t, int i, int S, int E) {
+	if (S == E) return tree[i] = v[S];
+	else return tree[i] = init(v, t, 2 * i, S, (S + E) / 2)
+		+ init(v, t, 2 * i + 1, (S + E) / 2 + 1, E);
 }
 
-void update(int i, int S, int E, int idx, ll gap) {
+void update(vector<ll>& v, vector<ll>& t, int i, int S, int E, int idx, ll gap) {
 	if (idx < S || E < idx) return;
-	tree[i] += gap;
+	t[i] += gap;
 	if (S != E) {
-		update(2 * i, S, (S + E) / 2, idx, gap);
-		update(2 * i + 1, (S + E) / 2 + 1, E, idx, gap);
+		update(v, t, 2 * i, S, (S + E) / 2, idx, gap);
+		update(v, t, 2 * i + 1, (S + E) / 2 + 1, E, idx, gap);
 	}
 }
-ll query( int i, int S, int E, int L, int R) {
+ll query(vector<ll>& v, vector<ll>& t, int i, int S, int E, int L, int R) {
 	if (E < L || R < S) return 0;
-	if (L <= S && E <= R) return tree[i];
-	return query(2 * i, S, (S + E) / 2, L, R) 
-		+ query(2 * i + 1, (S + E) / 2 + 1, E, L, R);
+	if (L <= S && E <= R) return t[i];
+	return query(v, t, 2 * i, S, (S + E) / 2, L, R)
+		+ query(v, t, 2 * i + 1, (S + E) / 2 + 1, E, L, R);
 }
 
 void output() {
 	int a, b, c;
+	ll d;
 	for (int i = 0;i < m + k;i++) {
-		cin >> a >> b >> c;
+		cin >> a;
 		if (a == 1) {
-			update(1, 0, n - 1, b - 1, c - arr[b - 1]);
-			arr[b - 1] = c;
+			cin >> b >> d;
+			update(arr, tree, 1, 0, n - 1, b - 1, d - arr[b - 1]);
+			arr[b - 1] = d;
 		}
-		else cout<<query(1, 0, n - 1, b-1 , c-1)<<'\n';
+		else {
+			cin >> b >> c;
+			cout << query(arr, tree, 1, 0, n - 1, b - 1, c - 1) << '\n';
+		}
 	}
 }
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	input();
-	init(1,0,n-1);
+	init(arr, tree, 1, 0, n - 1);
 	output();
 	return 0;
 }

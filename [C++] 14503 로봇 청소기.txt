@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+typedef long long ll;
+using namespace std;
+int wall[52][52];
+bool chk[52][52];
+int n, m, sum = 0;
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+void dfs(int y,int x,int dir,bool clean) {
+	if (clean == true) {
+		sum++;
+		chk[y][x] = true;
+	}
+	for (int i = 1;i <= 4;i++) {
+		int idx = (dir - i);
+		if (idx < 0) idx = idx + 4;
+		if (wall[y + dy[idx]][x + dx[idx]] == 0 && chk[y + dy[idx]][x + dx[idx]] == false) {
+			dfs(y + dy[idx], x + dx[idx], idx,true);
+			return;
+		}
+	}
+	int idx = (dir - 2);
+	if (idx < 0) idx = idx + 4;
+	if (wall[y + dy[idx]][x + dx[idx]] == 0) {
+		dfs(y + dy[idx], x + dx[idx], dir, false);
+		return;
+	}
+	else return;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+	int y, x, dir;
+	cin >> y >> x >> dir;
+	for (int i = 0;i <= 51;i++)
+		for (int j = 0;j <= 51;j++)
+			wall[i][j] = 1;
+	for (int i = 1;i <= n;i++)
+		for (int j = 1;j <= m;j++)
+			cin >> wall[i][j];
+	dfs(y+1, x+1, dir,true);
+	cout << sum;
+	return 0;
+}
