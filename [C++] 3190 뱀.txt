@@ -1,0 +1,92 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+
+int n, m, k,cnt=0;
+int arr[102][102];
+int dx[4] = { 1,0,-1,0 }, dy[4] = { 0,1,0,-1 };
+int dir = 0;
+queue <pii> q;
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	cin >> n;
+	for (int i = 0;i <= n + 1;i++)
+		arr[0][i] = arr[n + 1][i] = arr[i][0] = arr[i][n + 1] = 1;
+
+	cin >> m;
+	while (m--) {
+		int u, v;
+		cin >> u >> v;
+		arr[u][v] = 2;
+	}
+
+	int y = 1, x = 1;
+	arr[1][1] = 1;
+	q.push({ 1,1 });
+
+	cin >> k;
+	int time = 1;
+	while (k--) {
+		int u;
+		char v;
+		cin >> u >> v;
+		while (time<=u) {
+			if (arr[y + dy[dir]][x + dx[dir]] == 1) {
+				while (k--) 
+					cin >> u >> v;
+				cout << time;
+				return 0;
+			}
+			else if (arr[y + dy[dir]][x + dx[dir]] == 2) {
+				arr[y + dy[dir]][x + dx[dir]] = 1;
+				q.push({ y + dy[dir],x + dx[dir] });
+			}
+			else {
+				arr[y + dy[dir]][x + dx[dir]] = 1;
+				q.push({ y + dy[dir],x + dx[dir] });
+				arr[q.front().first][q.front().second] = 0;
+				q.pop();
+			}
+			y = y + dy[dir];
+			x = x + dx[dir];
+			time++;
+		}
+		if (v == 'D') dir = (dir + 1) % 4;
+		else if (v == 'L') {
+			dir = (dir - 1);
+			if (dir < 0) dir = dir + 4;
+		}
+	}
+	while (true) {
+		if (arr[y + dy[dir]][x + dx[dir]] == 1) {
+			cout << time;
+			return 0;
+		}
+		else if (arr[y + dy[dir]][x + dx[dir]] == 2) {
+			arr[y + dy[dir]][x + dx[dir]] = 1;
+			q.push({ y + dy[dir],x + dx[dir] });
+		}
+		else {
+			arr[y + dy[dir]][x + dx[dir]] = 1;
+			q.push({ y + dy[dir],x + dx[dir] });
+			arr[q.front().first][q.front().second] = 0;
+			q.pop();
+		}
+		y = y + dy[dir];
+		x = x + dx[dir];
+		time++;
+	}
+	return 0;
+}

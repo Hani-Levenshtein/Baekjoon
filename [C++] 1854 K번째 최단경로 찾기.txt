@@ -1,0 +1,64 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+
+
+int n, m,k;
+vector<pii> path[1000];
+priority_queue<int> dist[1000];
+void dijkstra() {
+	
+	priority_queue<pii> pq;
+	dist[0].push(0);
+	pq.push(make_pair( 0,0 ));
+
+	while (pq.empty() != true) {
+		int cost = -pq.top().first;
+		int here = pq.top().second;
+		pq.pop();
+
+		for (int i = 0;i < (int)path[here].size();i++) {
+
+			int there = path[here][i].first;
+			int nextdist = cost + path[here][i].second;
+
+			if (dist[there].size() < k) {
+				dist[there].push(nextdist);
+				pq.push(make_pair(-nextdist, there ));
+			}
+			else if (dist[there].top() > nextdist) {
+				dist[there].pop();
+				dist[there].push(nextdist);
+				pq.push(make_pair (-nextdist,there));
+			}
+		}
+	}
+}
+
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m>>k;
+	int u, v, w;
+	for (int i = 0;i < m;i++) {
+		cin >> u >> v >> w;
+		path[u - 1].push_back(make_pair( v - 1,w));
+	}
+	dijkstra();
+	for (int i = 0;i < n;i++)
+		if (dist[i].size() == k) cout << dist[i].top() << '\n';
+		else cout << "-1\n";
+
+	return 0;
+}
