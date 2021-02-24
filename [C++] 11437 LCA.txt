@@ -1,0 +1,63 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int n, m;
+vector<int> tree[50000];
+int parent[50000];
+int level[50000];
+int chk[50000];
+
+void getParentandLevel(int t) {
+	chk[t] = true;
+	for(auto a: tree[t])
+		if (chk[a] == false) {
+			parent[a] = t;
+			level[a] = level[t] + 1;
+			getParentandLevel(a);
+		}
+	return;
+}
+
+void searchAnc(int y, int x) {
+	while (level[y] > level[x]) y = parent[y];
+	while (level[y] < level[x]) x = parent[x];
+
+	while (y != x) {
+		y = parent[y];
+		x = parent[x];
+	}
+	cout << y + 1<<'\n';
+	return;
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int u, v;
+	cin >> n;
+	while (--n) {
+		cin >> u >> v;
+		tree[u - 1].push_back(v - 1);
+		tree[v - 1].push_back(u - 1);
+	}
+	getParentandLevel(0);
+	cin >> m;
+	while (m--) {
+		cin >> u >> v;
+		searchAnc(--u, --v);
+	}
+	return 0;
+}
