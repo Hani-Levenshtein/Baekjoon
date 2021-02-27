@@ -1,0 +1,36 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+string str,strSearch;
+set<string> setSearch;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin >> str;
+	for (int i = 0; i < str.size(); i++) {
+		strSearch = "";
+		for (int j = i; j < str.size(); j++) {
+			strSearch += str[j];
+			setSearch.insert(strSearch);
+		}
+	}
+	cout << setSearch.size();
+
+
+    return 0;
+}
