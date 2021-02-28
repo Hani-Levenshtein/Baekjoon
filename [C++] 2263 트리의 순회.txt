@@ -1,0 +1,43 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+
+vector<int> idx,post,in;
+void preorder(int postL, int postR, int inL, int inR) {
+    if (postR < postL || inR < inL) return;
+    cout << post[postR] << " ";
+    preorder(postL, postL+idx[post[postR]]-inL-1,inL, idx[post[postR]] - 1);
+    preorder(postL + idx[post[postR]] - inL, postR-1, idx[post[postR]] +1,inR);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+   
+    int n;
+    cin >> n;
+    idx.resize(n+1);   post.resize(n+1);   in.resize(n+1);
+    for (int i = 1;i <= n;i++) {
+        cin >> in[i];
+        idx[in[i]] = i;
+    }
+    for (int i = 1;i <= n;i++) cin >> post[i];
+
+    preorder(1,n,1,n);
+
+    return 0;
+}
