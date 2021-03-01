@@ -1,0 +1,37 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+int bag[10001];
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m, value, weight,things,thing;
+	cin >> n >> m;
+	for (int i = 1;i <= n;i++) {
+		cin >> weight >> value >> things;
+		thing = 1;
+		while (0 < things) {
+			for (int j = m;weight * thing <= j;j--)
+				bag[j] = max(bag[j], bag[j - weight * thing] + value * thing);
+			things = things - thing;
+			thing = thing * 2;
+			if (things < thing) thing = 1;
+		}
+	}
+	cout << bag[m];
+	return 0;
+}
