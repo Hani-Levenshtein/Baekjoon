@@ -1,0 +1,79 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int arr[9][9];
+bool flag = false;
+struct dot {
+	int y, x;
+};
+vector<dot> dots;
+
+bool chk(dot D, int num) {
+	int Y = D.y / 3;
+	int X = D.x / 3;
+
+	for (int i = 0;i < 9;i++) if (D.y!=i && arr[i][D.x] == num) return false;
+	for (int j = 0;j < 9;j++) if (D.x!=j && arr[D.y][j] == num) return false;
+
+	for (int i = 3 * Y;i < 3 * Y + 3;i++)for (int j = 3 * X;j < 3 * X + 3;j++)
+		if (!(D.y==i && D.x==j) && arr[i][j] == num) return false;
+	return true;
+}
+void search(int k) {
+	if (k == dots.size()) {
+		for (int i = 0;i < 9;i++) {
+			for (int j = 0;j < 9;j++) cout << arr[i][j];
+			cout << '\n';
+		}
+		flag = true;
+		return;
+	}
+
+	dot D = dots[k];
+	for (int a = 1;a <= 9;a++) {
+		arr[D.y][D.x] = a;
+		if (chk(D, a) == true) search(k + 1);
+		if (flag == true) return;
+		arr[D.y][D.x] = 0;
+	}
+	
+}
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	string s;
+	int t; cin >> t;
+	while (t--) {
+		flag = false;
+		for (int i = 0;i < 9;i++) {
+			cin >> s;
+			for (int j = 0;j < 9;j++) {
+				arr[i][j] = s[j] - '0';
+				if (arr[i][j] == 0) {
+					dot newdot;
+					newdot.y = i, newdot.x = j;
+					dots.push_back(newdot);
+				}
+			}
+		}
+		search(0);
+		if (flag == false) cout << "Could not complete this grid."<<'\n';
+		cout << '\n';
+	}
+	return 0;
+}
