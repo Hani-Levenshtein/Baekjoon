@@ -1,0 +1,87 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int inDegree[10001], time[10001], accumulatedTime[10001];
+queue<int> q;
+vector<int> graph[10001];
+
+void topologicalSort() {
+
+	while (q.empty()!=true) {
+		int here = q.front(); 
+		q.pop();
+		for (auto next : graph[here]) {
+			accumulatedTime[next] = max(accumulatedTime[next], accumulatedTime[here] + time[next]);
+			if (--inDegree[next] == 0) q.push(next);
+		}
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int t;cin >> t;
+	int n, m;
+	cin >> n;
+	vector<int> a(n);
+	vector<int> sumA;
+	for (int i = 0;i < n;i++) cin >> a[i];
+	for (int i = 0;i < n;i++) {
+		int sum = 0;
+		for (int j = i;j < n;j++) {
+			sum += a[j];
+			sumA.push_back(sum);
+		}
+	}
+
+	cin >> m;
+	vector<int> b(m);
+	vector<int> sumB;
+	for (int i = 0;i < m;i++) cin >> b[i];
+	for (int i = 0;i < m;i++) {
+		int sum = 0;
+		for (int j = i;j < m;j++) {
+			sum += b[j];
+			sumB.push_back(sum);
+		}
+	}
+
+	sort(all(sumA)); sort(all(sumB));
+	int pA = 0, pB = (int)sumB.size() - 1;
+	ll res = 0;
+	while (pA <= (int)sumA.size() - 1 && 0 <= pB) {
+
+		if (sumA[pA] + sumB[pB] < t) pA++;
+		else if (sumA[pA] + sumB[pB] > t) pB--;
+		else {
+			ll cntA = 1, cntB = 1;
+			while (pA + 1 <= (int)sumA.size() - 1 && sumA[pA] == sumA[pA + 1])
+			{
+				cntA++, pA++;
+			}
+			while (0 <= pB - 1 && sumB[pB] == sumB[pB - 1])
+			{
+				cntB++, pB--;
+			}
+			res += cntA * cntB;
+			pA++, pB--;
+		}
+	}
+	cout << res;
+	return 0;
+}
