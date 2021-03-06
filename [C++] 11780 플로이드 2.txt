@@ -1,0 +1,78 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int n,m,arr[100][100];
+vector<int> path[100][100];
+void floyd() {
+	for (int via = 0;via < n;via++)
+		for (int here = 0;here < n;here++) {
+			if (arr[here][via] == 987654321) continue;
+			for (int next = 0;next < n;next++) {
+				if (arr[here][next] > arr[here][via] + arr[via][next]) {
+					arr[here][next] = arr[here][via] + arr[via][next];
+					path[here][next] = path[here][via];
+					path[here][next].pop_back();
+					path[here][next].insert(path[here][next].end(), all(path[via][next]));
+				}
+			}
+		}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	cin >> m;
+	for (int i = 0;i < n;i++)
+		for (int j = 0;j < n;j++)
+			if (i == j) arr[i][j] = 0;
+			else arr[i][j] = 987654321;
+
+	for (int i = 0;i < m;i++) {
+		int u, v, w;
+		cin >> u >> v >> w;
+		if (arr[u - 1][v - 1] > w) {
+			arr[u - 1][v - 1] = w;
+			path[u - 1][v - 1].clear(); 
+			path[u - 1][v - 1].push_back(u - 1);
+			path[u - 1][v - 1].push_back(v - 1);
+		}
+	}
+
+	floyd();
+
+	for (int i = 0;i < n;i++) {
+		for (int j = 0;j < n;j++)
+			cout << arr[i][j] << " ";
+		cout << '\n';
+	}
+
+	for (int i = 0;i < n;i++) {
+		for (int j = 0;j < n;j++) {
+
+			if (path[i][j].size() == 0) cout << "0";
+			else{
+				cout << path[i][j].size() << " ";
+				for (auto a : path[i][j]) cout << a+1 << " ";
+			}
+			cout << '\n';
+		}
+	}
+
+	return 0;
+}
