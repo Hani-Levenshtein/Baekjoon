@@ -1,0 +1,49 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int n,m,arr[100][100];
+
+void floyd() {
+	for (int via = 0;via < n;via++)
+		for (int here = 0;here < n;here++)
+			for (int next = 0;next < n;next++)
+				if (arr[here][via] == 1 && arr[via][next] == 1)
+					arr[here][next] = 1;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	cin >> m;
+	for (int i = 0;i < m;i++) {
+		int u, v;
+		cin >> u >> v;
+		arr[u - 1][v - 1] = 1;
+	}
+
+	floyd();
+	for (int i = 0;i < n;i++) {
+		int res = 0;
+		for (int j = 0;j < n;j++)
+			if (arr[i][j] == 0 && arr[j][i] == 0 && i != j) res++;
+		cout << res<<'\n';
+	}
+	
+	return 0;
+}
