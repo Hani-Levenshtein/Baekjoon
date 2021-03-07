@@ -1,0 +1,108 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+typedef struct node{
+    ll realMax, sudoMax, cntMax, sum;
+} node;
+
+vector<ll>arr;
+vector<node> tree;
+
+node fusion(node L, node R){
+    if (L.realMax == R.realMax)return {L.realMax, max(L.sudoMax, R.sudoMax), L.cntMax + R.cntMax, L.sum + R.sum};
+    else if (L.realMax > R.realMax)  return {L.realMax, max(R.realMax, L.sudoMax), L.cntMax, L.sum + R.sum};
+    else return {R.realMax, max(L.realMax, R.sudoMax), R.cntMax, L.sum + R.sum};
+}
+
+node init(int i, int l, int r){
+    if (l == r) return tree[i] = {arr[l], INT_MIN, 1, arr[l]};
+    int m = (l + r)/2;
+    return tree[i] = fusion(init( 2*i, l, m), init( 2*i + 1, m + 1, r));
+}
+
+void updateLazy(int i, int l, int r){
+    if (l == r) return;
+    for (int j = 2*i;j<=2*i+1;j++)
+        if (tree[i].realMax < tree[j].realMax){
+            tree[j].sum -= tree[j].cntMax * (tree[j].realMax - tree[i].realMax);
+            tree[j].realMax = tree[i].realMax;
+        }
+}
+
+void updateRange(int i, int l, int r, int L, int R, ll val)
+{
+    updateLazy(i, l, r);
+    if (r < L || R < l || tree[i].realMax <= val) return;
+    if (L <= l && r <= R && tree[i].sudoMax < val){
+        tree[i].sum -= tree[i].cntMax * (tree[i].realMax - val);
+        tree[i].realMax = val;
+        updateLazy(i, l, r);
+        return;
+    }
+    int m = (l + r)/2;
+    updateRange(2 * i, l, m, L, R, val);
+    updateRange(2 * i + 1, m + 1, r, L, R, val);
+    tree[i] = fusion(tree[2*i], tree[2*i + 1]);
+}
+
+ll queryMax(int i, int l, int r, int L, int R){
+    updateLazy(i, l, r);
+    if (r < L || R < l)return INT_MIN;
+    if (L <= l && r <= R)return tree[i].realMax;
+    int m = (l + r) / 2;
+    return max(queryMax(i * 2, l, m, L, R), queryMax(i * 2 + 1, m + 1, r, L, R));
+}
+
+ll querySum(int i, int l, int r, int L, int R){
+    updateLazy(i, l, r);
+    if (r < L || R < l)return 0;
+    if (L <= l && r <= R)return tree[i].sum;
+    int m = (l + r) / 2;
+    return querySum(2*i, l, m, L, R) + querySum( 2*i + 1, m + 1, r, L, R);
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n,m,order,L,R;
+    ll val;
+    cin >> n;
+    arr.resize(n);
+    tree.resize(4*n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    init(1, 0, n-1);
+    cin >> m;
+    for(int i=0;i<m;i++){
+        int order;
+        cin >> order;
+        if (order == 1){
+            cin >> L >> R >> val;
+            updateRange(1, 0, n - 1, L - 1, R - 1, val);
+        }
+        else if (order == 2){
+            cin >> L >> R;
+            cout << queryMax(1, 0, n-1, L-1, R-1) << '\n';
+        }
+        else{
+            cin >> L >> R;
+            cout<< querySum(1, 0, n-1, L-1, R-1) << '\n';
+        }
+    }
+}
