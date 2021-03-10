@@ -1,0 +1,83 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+queue<string> q;
+set<string> chk;
+int dx[4] = {-1, 1, -3, 3};
+string str, ds;
+int res=0;
+
+void bfs(string s){
+
+    int idx;
+    string oldstr,newstr;
+
+    chk.insert(s);
+    q.push(s);
+
+    while (!q.empty())
+    {
+        int size = q.size();
+        for (int i = 0; i < size; i++)
+        {
+            oldstr = q.front();
+            q.pop();
+
+            if (oldstr == "123456780")
+            {
+                cout << res;
+                return;
+            }
+
+            idx = oldstr.find("0");
+            for (int i = 0; i < 4; i++)
+            {
+                int swapIndex = idx + dx[i];
+                if (swapIndex < 0 || swapIndex >= 9 || (idx % 3 == 0 && i == 0) || (idx % 3 == 2) && i == 1)
+                {
+                    continue;
+                }
+                newstr = oldstr;
+                swap(newstr[idx], newstr[swapIndex]);
+                if (chk.count(newstr) == 0)
+                {
+                    chk.insert(newstr);
+                    q.push(newstr);
+                }
+            }
+        }
+        res++;
+    }
+    cout << "-1";
+    return;
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    for (int i = 0; i < 9; i++)
+    {
+        cin >> ds;
+        str += ds;
+    }
+    bfs(str);
+    return 0;
+}
+
