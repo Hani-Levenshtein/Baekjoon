@@ -1,0 +1,81 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int E, w,res=0;
+char u, v;
+int cap[52][52], flow[52][52],parent[52];
+vector<int> path[52];
+
+int charToInt(char c) {
+    if (c <= 'Z') return c - 'A';
+    return c - 'a' + 26;
+}
+
+void edmond() {
+    int sink = charToInt('Z');
+    int src = charToInt('A');
+   
+    while (true) {
+        memset(parent, -1, sizeof(parent));
+        queue<int> q;
+        q.push(src);
+        while (q.empty() != true) {
+            int here = q.front(); q.pop();
+            if (here == sink) break;
+            for (int i = 0;i < (int)path[here].size();i++) {
+                int next = path[here][i];
+                if (parent[next] == -1 && flow[here][next] < cap[here][next]) {
+                    parent[next] = here;
+                    q.push(next);
+                  
+                }
+            }
+        }
+
+        if (parent[sink] == -1) break;
+
+        int amount = 987654321;
+        for (int vertex = sink;vertex != src;vertex = parent[vertex])
+            amount = min(cap[parent[vertex]][vertex] - flow[parent[vertex]][vertex], amount);
+
+        for (int vertex = sink;vertex != src;vertex = parent[vertex]) {
+            flow[parent[vertex]][vertex] += amount;
+            flow[vertex][parent[vertex]] -= amount;
+        }
+        res += amount;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin >> E;
+  
+    for (int i = 0;i < E;i++) {
+        cin >> u >> v >> w;
+        int U = charToInt(u), V = charToInt(v);
+        cap[U][V] += w; cap[V][U] += w;
+        path[U].push_back(V), path[V].push_back(U);
+    }
+
+    edmond();
+    cout << res;
+    return 0;
+}
