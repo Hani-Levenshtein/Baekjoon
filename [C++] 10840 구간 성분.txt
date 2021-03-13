@@ -1,0 +1,49 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int main() {
+	ios_base::sync_with_stdio(false); 
+	cin.tie(NULL);
+	string Sa, Sb;
+	cin >> Sa;
+	cin >> Sb;
+
+	int sa = (int)Sa.size(),sb = (int)Sb.size();
+	set<vector<int> > hash;
+
+	for (int i = 0; i < sa; i++){
+		vector<int> alpha(26);
+		for (int j = i; j < sa; j++) {
+			alpha[Sa[j] - 'a']++;
+			hash.insert(alpha);
+		}
+	}
+	int res = 0;
+	for (int i = 0; i < sb; i++) {
+		vector<int> alpha(26);
+		for (int j = i; j < sb; j++) {
+			alpha[Sb[j] - 'a']++;
+			if (hash.count(alpha)>0)
+				res = max(res, j-i+1);
+		}
+	}
+	cout << res;
+    return 0;
+}
