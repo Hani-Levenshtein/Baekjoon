@@ -1,0 +1,78 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int E,dy, dx, w;
+
+struct Edge {
+	int cost, node[2];
+	Edge(int u,int v,int cost) {
+		this->cost = cost;
+		this->node[0] = u;
+		this->node[1] = v;
+	}
+	bool operator<(Edge e) {
+		return this->cost < e.cost;
+	}
+};
+
+vector <Edge> edges;
+vector <int> Parent, Rank;
+
+int findParent(int u){
+	if (Parent[u] == u) return u;
+	return Parent[u] = findParent(Parent[u]);
+}
+
+void mergeParent(int u, int v){
+	u = findParent(u);
+	v = findParent(v);
+	if (u == v)return;
+	if (Rank[u] > Rank[v]) swap(u, v);
+	Parent[u] = v;
+	if (Rank[u] == Rank[v]) Rank[v]++;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> E;
+	Rank.resize(E, 1);
+	Parent.resize(E);
+
+	for (int i = 0;i < E;i++)Parent[i] = i;
+
+	for (int i = 0;i < E;i++)
+		for (int j = 0;j < E;j++) {
+		cin >> w;
+		if (i < j) edges.push_back(Edge(i, j,w));
+		}
+
+	sort(all(edges));
+	for (int i = 0;i < (int)edges.size();i++) {
+		int cost = edges[i].cost;
+		int L = edges[i].node[0];
+		int R = edges[i].node[1];
+		if (findParent(L) == findParent(R))continue;
+		mergeParent(L, R);
+		cout << L + 1 << " " << R + 1 << '\n';
+	}
+	return 0;
+}
