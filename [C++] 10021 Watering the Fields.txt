@@ -1,0 +1,98 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
+typedef long long ll;
+using namespace std;
+
+int E, dy, dx, w,k;
+
+struct Edge {
+	int cost, node[2];
+	Edge(int u, int v, int cost) {
+		this->cost = cost;
+		this->node[0] = u;
+		this->node[1] = v;
+	}
+	bool operator<(Edge e) {
+		return this->cost < e.cost;
+	}
+};
+
+struct Dot {
+	int y, x, idx;
+	Dot(int y, int x, int idx) {
+		this->y = y;
+		this->x = x;
+		this->idx = idx;
+	}
+	int cost(Dot h) {
+		return (this->x - h.x) * (this->x - h.x) + (this->y - h.y) * (this->y - h.y);
+	}
+};
+
+vector <Edge> edges;
+vector <int> Parent, Rank;
+vector <Dot> dots;
+
+int findParent(int u) {
+	if (Parent[u] == u) return u;
+	return Parent[u] = findParent(Parent[u]);
+}
+
+void mergeParent(int u, int v) {
+	u = findParent(u);
+	v = findParent(v);
+	if (u == v)return;
+	if (Rank[u] > Rank[v]) swap(u, v);
+	Parent[u] = v;
+	if (Rank[u] == Rank[v]) Rank[v]++;
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> E>>k;
+	Rank.resize(E, 1);
+	Parent.resize(E);
+
+	for (int i = 0;i < E;i++)Parent[i] = i;
+
+	for (int i = 0;i < E;i++) {
+		cin >> dx >> dy;
+		dots.push_back(Dot(dy, dx, i));
+	}
+
+	for (int i = 0;i < E;i++)
+		for (int j = 0;j < E;j++)
+			if (i < j && k<= dots[i].cost(dots[j])) edges.push_back(Edge(i, j, dots[i].cost(dots[j])));
+
+	sort(all(edges));
+	int res = 0,network=0;
+	for (int i = 0;i < (int)edges.size();i++) {
+		int cost = edges[i].cost;
+		int L = edges[i].node[0];
+		int R = edges[i].node[1];
+		if (findParent(L) == findParent(R))continue;
+		mergeParent(L, R);
+		network++;
+		res +=cost;
+	}
+	if (network == E - 1)cout << res;
+	else cout << -1;
+	return 0;
+}
