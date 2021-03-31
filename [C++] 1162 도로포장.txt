@@ -1,0 +1,95 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v), v.end())
+typedef long long ll;
+using namespace std;
+
+int V,E,K,u,v;
+ll w;
+vector<pli> arr[10001];
+ll dist[10001][22];
+
+struct Node{
+    ll cost;
+    int idx,cnt;
+    Node(ll cost,int idx,int cnt){
+        this->cost=cost;
+        this->idx=idx;
+        this->cnt=cnt;
+    };
+    
+    bool operator<(const Node &R) const{
+        return cost>R.cost;
+    }
+    
+};
+
+priority_queue<Node> pq;
+
+void dijkstra(){
+    
+    pq.push(Node(0LL,1,0));
+   
+    for(int i=1;i<=V;i++)
+        for(int j=0;j<=K;j++)
+            dist[i][j]=LONG_LONG_MAX;
+    dist[1][0]=0LL;
+    
+    while(!pq.empty()){
+        ll cost = pq.top().cost;
+        int here = pq.top().idx;
+        int kth = pq.top().cnt;
+        pq.pop();
+        if(dist[here][kth]<cost) continue;
+        
+        for(auto there : arr[here]){
+            int nextnode = there.second;
+            ll nextcost = there.first + cost;
+            
+            if(dist[nextnode][kth]>nextcost){
+                dist[nextnode][kth]=nextcost;
+                pq.push(Node(nextcost,nextnode,kth));
+            }
+            
+            if(kth+1<=K && dist[nextnode][kth+1]>cost){
+                dist[nextnode][kth+1]=cost;
+                pq.push(Node(cost,nextnode,kth+1));
+            }
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin>>V>>E>>K;
+
+    for(int i=0;i<E;i++){
+        cin>>u>>v>>w;
+        arr[v].push_back({w,u});
+        arr[u].push_back({w,v});
+    }
+        
+    dijkstra();
+    
+    ll res=LONG_LONG_MAX;
+    for(int i=0;i<=K;i++) res=min(res,dist[V][i]);
+    cout<<res<<'\n';
+    return 0;
+}
