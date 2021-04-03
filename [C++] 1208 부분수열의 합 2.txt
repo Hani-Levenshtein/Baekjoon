@@ -1,0 +1,60 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v)), v.end())
+typedef long long ll;
+using namespace std;
+
+int n,k;
+vector<int> v;
+map <int, int>leftMap;
+ll res = 0LL;
+
+void memo1(int start, int sum) {
+    if (start == n/2) {
+        leftMap[sum]++;
+        return;
+    }
+    memo1(start + 1, sum);
+    memo1(start + 1, sum + v[start]);
+}
+
+void memo2(int mid, int sum) {
+    if (mid == n) {
+        res += leftMap[sum];
+        return;
+    }
+    memo2(mid + 1, sum);
+    memo2(mid + 1, sum - v[mid]);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n >> k;
+    v.resize(n);
+    for (int i = 0;i < n;i++) cin >> v[i];
+
+    memo1(0, 0);
+    memo2(n / 2, k);
+    if (k == 0) res--;
+    cout << res;
+
+    return 0;
+}
