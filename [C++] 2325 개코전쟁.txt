@@ -1,0 +1,107 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v), v.end())
+typedef long long ll;
+using namespace std;
+
+#define MAX 987654321
+int V, E, v, e, weight;
+vector <pii>adj[1001];
+int result[1001], parent[1001];
+
+void dijkstra(){
+    
+    for(int i=1;i<=1000;i++){
+        result[i]=MAX;
+        parent[i]=-1;
+    }
+    priority_queue<pii,vector<pii>, greater<pii>> pq;
+    pq.push({0,1});
+    result[1]=0;
+    
+    while(!pq.empty()){
+        int here = pq.top().second;
+        int cost = pq.top().first;
+        pq.pop();
+        
+        if (result[here]<cost) continue;
+        
+        for(auto ith: adj[here]){
+            int nextcost = cost + ith.second;
+            int there = ith.first;
+            
+            if(result[there]>nextcost){
+                result[there]=nextcost;
+                parent[there]=here;
+                pq.push({nextcost,there});
+            }
+        }
+    }
+}
+
+int newDijkstra(int par, int child){
+    
+    for(int i=1;i<=1000;i++)result[i]=MAX;
+    priority_queue<pii,vector<pii>, greater<pii>> pq;
+    pq.push({0,1});
+    result[1]=0;
+    
+    while(!pq.empty()){
+        int here = pq.top().second;
+        int cost = pq.top().first;
+        pq.pop();
+        
+        if (result[here]<cost) continue;
+        
+        for(auto ith: adj[here]){
+            int nextcost = cost + ith.second;
+            int there = ith.first;
+            if((there == par && here == child) || (here == par && there == child)) continue;
+            if(result[there]>nextcost){
+                result[there]=nextcost;
+                pq.push({nextcost,there});
+            }
+        }
+    }
+    return result[V];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    cin >> V >> E;
+    
+    for (int i = 0;i < E;i++) {
+        cin >> v >> e >> weight;
+        adj[v].push_back({ e,weight });
+        adj[e].push_back({ v,weight });
+    }
+    
+    dijkstra();
+  
+    int Mvalue = INT_MIN,here=V;
+    while(parent[here]!=-1){
+        Mvalue = max(Mvalue, newDijkstra(parent[here],here));
+        here = parent[here];
+    }
+    cout<<Mvalue<<'\n';
+    
+    return 0;
+}
