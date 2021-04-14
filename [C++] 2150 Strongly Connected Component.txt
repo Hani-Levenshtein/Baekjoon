@@ -1,0 +1,73 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v), v.end())
+typedef long long ll;
+using namespace std;
+
+vector<vector<int>> graph, reverseGraph;
+bool chk[10001];
+int SCC[10001];
+vector<int> arr;
+int n, m,a,b,total = 0;
+
+void dfs(int here){
+    chk[here] = true;
+    for(auto there : graph[here]) if(!chk[there]) dfs(there);
+    arr.push_back(here);
+}
+
+void reversedfs(int here, int ith){
+    chk[here] = true;
+    SCC[here] = ith;
+    for(auto there : reverseGraph[here]) if(!chk[there]) reversedfs(there, ith);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin >> n >> m;
+    graph.resize(n+1);
+    reverseGraph.resize(n+1);
+    for(int i=0; i<m; i++){
+        cin >> a >> b;
+        graph[a].push_back(b);
+        reverseGraph[b].push_back(a);
+    }
+
+    for(int i=1; i<=n; i++) if(!chk[i]) dfs(i);
+
+    memset(chk, false, sizeof(chk));
+
+    for(int here = (int)arr.size()-1; 0<=here; here--)
+        if(!chk[arr[here]]) reversedfs(arr[here], ++total);
+    
+    cout << total << '\n';
+    
+    vector<vector<int>> result(total);
+    
+    for(int i=1; i<=n; i++) result[SCC[i]-1].push_back(i);
+
+    for (int i = 0; i < total; i++) sort(all(result[i]));
+    sort(all(result));
+    for (auto here : result){
+        for (auto there : here) cout << there << ' ';
+        cout << "-1\n";
+    }
+    return 0;
+}
