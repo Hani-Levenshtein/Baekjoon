@@ -1,0 +1,102 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v), v.end())
+typedef long long ll;
+using namespace std;
+
+struct path{
+    int there,cost;
+};
+
+int depthFromRoot[40001], distanceFromRoot[40001];
+bool chk[40001];
+int parent[40001][20];
+vector<path> tree[40001];
+int n, m, u, v, w;
+
+void dfs(int here, int depth, int cost){
+    chk[here] = true;
+    depthFromRoot[here] = depth;
+    distanceFromRoot[here] = cost;
+    
+    for(auto ith : tree[here]){
+        int there = ith.there;
+        int newcost = ith.cost+cost;
+        if(chk[there]) continue;
+        parent[there][0] = here;
+        dfs(there, depth+1, newcost);
+    }
+}
+
+int LCA(int shallow, int deep){
+    if(depthFromRoot[shallow] > depthFromRoot[deep]) swap(shallow, deep);
+    int depthGap = depthFromRoot[deep] - depthFromRoot[shallow];
+    
+    for(int i=0; depthGap; i++){
+        if(depthGap  & 1) deep = parent[deep][i];
+        depthGap >>= 1;
+    }
+    
+    if(shallow == deep) return shallow;
+    
+    for(int i=19; i>=0; i--)
+        if(parent[shallow][i] != parent[deep][i]) {
+            shallow = parent[shallow][i];
+            deep = parent[deep][i];
+        }
+    return parent[shallow][0];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    cin >> n;
+    depthFromRoot[1] = 1;
+    distanceFromRoot[1] = 0;
+    parent[1][0] = 0;
+    chk[1] = true;
+    
+    for(int i=0; i<n-1; i++){
+        cin >> u >> v >> w;
+        tree[u].push_back({v, w});
+        tree[v].push_back({u, w});
+    }
+    
+    dfs(1, 0, 0);
+    
+    for(int j=1; j<20; j++){
+        for(int i=1; i<=n; i++){
+            int &halfAncester=  parent[i][j-1];
+            int &finalAncester = parent[halfAncester][j-1];
+            int &ancester = parent[i][j];
+            ancester = finalAncester;
+        }
+    }
+
+    cin >> m;
+    while(m--){
+        cin >> u >> v;
+        int lca = LCA(u, v);
+        int lcaCost = distanceFromRoot[lca], uCost = distanceFromRoot[u], vCost = distanceFromRoot[v];
+        int cost = uCost + vCost - 2*lcaCost;
+        cout << cost << '\n';
+    }
+    return 0;
+}
