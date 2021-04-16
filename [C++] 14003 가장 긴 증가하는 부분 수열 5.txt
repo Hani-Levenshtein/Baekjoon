@@ -1,0 +1,68 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string.h>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v), v.end())
+typedef long long ll;
+using namespace std;
+ 
+int arr[1000001], LISindex[1000001];
+vector<int> LIS, result;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int n;
+    cin>>n;
+    for (int i = 0; i < n; i++) cin>>arr[i];
+
+    for (int i = 0; i < n; i++){
+        if (LIS.size() == 0){
+            LISindex[i] = (int)LIS.size();
+            LIS.push_back(arr[i]);
+        }
+        
+        else if (LIS[(int)LIS.size()-1] < arr[i]){
+            LISindex[i] = (int)LIS.size();
+            LIS.push_back(arr[i]);
+        }
+        
+        else{
+            int L = 0, R = (int)LIS.size() - 1;
+            
+            while (L < R) {
+                int M = (L + R) / 2;
+                if (arr[i]<=LIS[M]) R = M;
+                else L = M + 1;
+            }
+            LIS[L] = arr[i];
+            LISindex[i] = L;
+        }
+    }
+    
+    cout << LIS.size() << '\n';
+    
+    int LISidx = (int)LIS.size() - 1;
+    
+    for (int i = n-1; 0<=i; i--)
+        if (LISindex[i] == LISidx){
+            LISidx--;
+            result.push_back(arr[i]);
+        }
+    for (int i = (int)result.size() - 1; 0<=i; i--) cout << result[i] << " ";
+    return 0;
+}
