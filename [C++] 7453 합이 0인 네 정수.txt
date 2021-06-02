@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string.h>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#include <cassert>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v)), v.end())
+typedef long long ll;
+using namespace std;
+
+ll num[4][4000];
+vector<ll> frontsum;
+ll cnt = 0;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+            cin >> num[0][i]>> num[1][i]>> num[2][i]>> num[3][i];
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            frontsum.push_back(num[0][i] + num[1][j]);
+
+    sort(all(frontsum));
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+        {
+            ll backsum = num[2][i] + num[3][j];
+            ll low = lower_bound(all(frontsum), -backsum) - frontsum.begin();
+            ll high = upper_bound(all(frontsum), -backsum) - frontsum.begin();
+
+            if (low!=high)
+                cnt += (high - low);
+        }
+    cout << cnt << '\n';
+    return 0;
+}
