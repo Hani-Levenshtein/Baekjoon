@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string.h>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#include <cassert>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v)), v.end())
+typedef long long ll;
+using namespace std;
+
+int dx[3] = { 1,0,1 }, dy[3] = { 0,1,1 };
+int n, res; 
+int arr[16][16]; 
+
+void movePipe(int y, int x, int pipe){
+    if (y == n - 1 && x == n - 1){
+        res++;
+        return;
+    }
+    for (int i = 0; i < 3; i++){
+        if ((i == 0 && pipe == 1) || (i == 1 && pipe == 0))  continue;
+       
+        int Y = y + dy[i]; 
+        int X = x + dx[i];
+        if (n<=Y  || n<=X || arr[Y][X] == 1)  continue; 
+        if (i == 2 && (arr[y][x + 1] == 1 || arr[y + 1][x] == 1))  continue; 
+        movePipe(Y, X, i);
+    }
+}
+
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin >> n; 
+    for (int i = 0; i < n; i++) 
+        for (int j = 0; j < n; j++) 
+            cin >> arr[i][j];  
+    movePipe(0, 1, 0); 
+    cout << res;
+    return 0;
+}
