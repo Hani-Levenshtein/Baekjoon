@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <string>
+#include <limits.h>
+#include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string.h>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#include <cassert>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v)), v.end())
+typedef long long ll;
+using namespace std;
+
+bool chk[1010101][11];
+int n, m,SIZE;
+int MAX = -1;
+void dfs(string s,int k) {
+    if (m == k) return;
+
+    for(int i=0;i<SIZE-1;i++)
+        for (int j = i+1;j < SIZE;j++) {
+            if (s[j] == '0' && i == 0) continue;
+            swap(s[j], s[i]);
+            if (chk[stoi(s)][k+1] == false) {
+                chk[stoi(s)][k+1] = true;
+                if(k+1==m)
+                    MAX = max(MAX, stoi(s));
+                dfs(s, k + 1);
+            }
+            swap(s[j], s[i]);
+        }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    string s;
+    cin >> s >> m;
+    SIZE = s.length();
+    dfs(s,0);
+
+    cout << MAX << '\n';
+    return 0;
+}
