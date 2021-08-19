@@ -1,34 +1,49 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
-#include <string.h>
+#include <string>
+#include <deque>
 #include <limits.h>
 #include <vector>
+#include <math.h>
+#include <stack>
+#include <bitset>
+#include <string.h>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
+#include <cassert>
+#define all(v) v.begin(), v.end()
+#define pii pair<int, int>
+#define pli pair<ll, int>
+#define make_unique(v) sort(all(v)), v.erase(unique(all(v)), v.end())
 typedef long long ll;
 using namespace std;
-int n;
-int arr[501][501];
-int sum[501][501];
-void dp() {
-	int m = 0;
-	sum[1][1] = arr[1][1];
-	for (int i = 2;i <= n;i++) {
-		for (int j = 1;j <= i;j++) {
-			if (sum[i][j] < arr[i][j] + sum[i - 1][j])
-				sum[i][j] = arr[i][j] + sum[i - 1][j];
-			if (sum[i][j] < arr[i][j] + sum[i - 1][j-1])
-				sum[i][j] = arr[i][j] + sum[i - 1][j-1];
-			if (i == n) m = max(m, sum[i][j]);
-		}
-	}
-	cout << m;
-}
-int main() {
-	cin >> n;
-	for (int i = 1;i <= n;i++)
-		for (int j = 1;j <= i;j++)
-			cin >> arr[i][j];
-	dp();
 
-	return 0;
+
+int arr[502][502];
+int sum[502][502];
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n, m;
+    
+    cin >> n;
+    for (int i = 1;i <= n;i++)
+        for (int j = 1;j <= i;j++)
+            cin >> arr[i][j];
+    
+    m = sum[1][1] = arr[1][1];
+    
+    for (int i = 1;i <= n;i++) {
+        for (int j = 1;j <= i;j++) {
+            sum[i][j] = arr[i][j] + max(sum[i-1][j],sum[i-1][j-1]);
+            m = max(m, sum[i][j]);
+        }
+    }
+    cout << m <<'\n';
+    return 0;
 }
